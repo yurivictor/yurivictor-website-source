@@ -1,0 +1,41 @@
+// Colors
+$color-default: #2a2a2a;
+$color-text-grey: #6c6c6c;
+$color-border-grey: #cccccc;
+
+$color-beige: #e3d0b7;
+$color-brown: #423530;
+$color-green: #575b3e;
+$color-orange: #e49e3b;
+
+// Fonts
+$font-serif: 'pp_pangaialight', Georgia, serif;
+$font-sans-serif: 'pp_neue_montrealregular', Helvetica, sans-serif;
+$font-sans-serif-bold: 'pp_neue_montrealbold', Helvetica, sans-serif;
+
+// Font sizes
+$font-small: 14px;
+$font-default: 18px;
+$font-large: 36px;
+$font-xlarge: 42px;
+
+// Padding and margins
+$space-small: 24px;
+$space-default: 48px;
+$space-large: 42px;
+
+// Widths
+$width-xsmall: 320px;
+$width-small: 480px;
+$width-medium: 768px;
+$width-large: 1024px;
+$width-xlarge: 1280px;
+$width-full: 100vw;
+
+// Heights
+$height-default: calc( 100vh - 42px );
+
+// Placeholders
+%right-border {
+    border-right:1px solid $color-border-grey;
+}

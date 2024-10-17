@@ -1,0 +1,261 @@
+/******************************************************
+ * 01 BASE
+ ******************************************************/
+@import 'variables';
+@import 'base/fonts';
+@import 'base/reset';
+@import 'base/typography';
+
+/******************************************************
+ * 02 COMPONENTS
+ ******************************************************/
+
+ /******************************************************
+ * 03 LAYOUTS
+ ******************************************************/
+ @import 'layout/sizes';
+
+/******************************************************
+ * 04 PAGES
+ ******************************************************/
+@import 'pages/header';
+@import 'pages/portfolio';
+@import 'pages/quote';
+@import 'pages/about';
+@import 'pages/elsewhere';
+@import 'pages/footer';
+
+/******************************************************
+ * 03 Sections
+ ******************************************************/
+.container {
+    display: flex;
+    height: 100vh;
+    width: max-content;
+    @media ( max-width: $width-small ) {
+        height: 100dvh;
+    }
+}
+
+/******************************************************
+ * 09 About
+ ******************************************************/
+ .image-container {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0 $space-small 0;
+    width: 100%;
+    img,
+    video {
+        height: 100%;
+        object-fit: cover;
+        width: 100%;
+    }
+}
+
+.vertical-text {
+    background-color: $color-green;
+    height: 100vh;
+    padding: 0 $space-default;
+    text-align: center;
+    text-orientation: mixed;
+    transform: rotate(0deg);
+    writing-mode: vertical-rl;
+    a {
+        color: white;
+    }
+}
+
+.separator {
+    height: 1px;
+    background-color: $color-border-grey;
+    width: 100%;
+}
+.links .text-small {
+    padding: $space-default $space-default 0 $space-default;
+}
+.hire {
+    background-color: #F7EEE6;
+    border-radius: 24px;
+    border-top-right-radius: 0;
+    font-size: 14px;
+    padding: $space-small;
+    position: absolute;
+    right: 0;
+    top: 24px;
+    width: 40%;
+    h3 {
+        font-family: $font-sans-serif-bold;
+        font-weight: 700;
+        padding-bottom: 3px;
+    }
+    ul {
+        margin-left: 10px;
+    }
+    li {
+        padding: 3px 0;
+    }
+}
+
+/******************************************************
+ * 10 Weird shit
+ ******************************************************/
+.tom-foolery {
+    background-color: $color-border-grey;
+    z-index: 1;
+}
+.tom-foolery-vertical {
+    height: 100%;
+    top:0;
+    position: absolute;
+    width: 1px;
+}
+.tom-foolery-horizontal {
+    height: 1px;
+    left: 0;
+    position: fixed;
+    width: 100%;
+}
+.tom-foolery-bottom { bottom: 24px; }
+.tom-foolery-left { left: 24px; }
+.tom-foolery-right { right: 24px; }
+.tom-foolery-top { top: 24px; }
+
+.flag-container {
+    bottom: 100px;
+    left: 15%;
+    height: 50px;
+    perspective: 150px;
+    position: absolute;
+    transform-style: preserve-3d;
+    width: 100px;
+    @media ( max-width: $width-small ) {
+        bottom: 75px;
+    }
+}
+.pennant {
+    align-items: center;
+    animation: wave 3s ease-in-out infinite;
+    background-color: $color-green;
+    color: white;
+    display: flex;
+    height: 100%;
+    position: relative;
+    justify-content: center;
+    transform-origin: left;
+    width: 100%;
+    @media ( max-width: $width-small ) {
+        width: 80px;
+    }
+}
+.pennant::before {
+    background: $color-border-grey;
+    height: 75px;
+    content: '';
+    left: 0;
+    bottom: -75px;
+    position: absolute;
+    width: 1px;
+    @media ( max-width: $width-small ) {
+        bottom: -50px;
+        height: 50px;
+    }
+}
+.pennant::after {
+    content: '';
+    position: absolute;
+    right: -25px;
+    border-left: 25px solid $color-green;
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+
+}
+.text {
+    font-family: "pp_pangaialight", Georgia, serif;
+    font-size: 18px;
+    padding-left: 12px;
+    z-index: 1;
+    @media ( max-width: $width-small ) {
+        font-size: 16px;
+    }
+}
+
+#logo {
+    background-color: black;
+    height: 150px;
+    position: absolute;
+    transition: left 0.05s linear, top 0.05s linear;
+    width: 150px;
+}
+
+#scroll-arrow {
+    animation: bounce 2s infinite;
+    color: $color-border-grey;
+    display: none;
+    font-family: $font-sans-serif-bold;
+    font-size: 12px;
+    right: $space-default;
+    top: calc( 50% - 10px );
+    text-transform: uppercase;
+    position: fixed;
+    span {
+        font-size: 40px;
+    }
+}
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(0);
+    }
+    40% {
+        transform: translateX(-10px);
+    }
+    60% {
+        transform: translateX(-5px);
+    }
+}
+
+@keyframes wave {
+    0%, 100% { transform: rotateY(0deg); }
+    50% { transform: rotateY(15deg); }
+}
+
+
+/**
+ * fix this
+ *******/
+
+.coverage {
+    padding: 36px 0 0 0;
+}
+.coverage a {
+    border-bottom: 1px solid $color-text-grey;
+}
+.coverage br {
+    content: "";
+    display: block;
+    font-size: 24%;
+    margin: 2em;
+}
+
+
+
+.divider {
+    background-color: $color-border-grey;
+    height: 30px;
+    margin-right: 10px;
+    transform: rotate(65deg);
+    width: 1px;
+}
+
+.bg-grey {
+    background-color: #E9E9E9;
+}
+.portfolio-bot {
+    .image-container img {
+        object-fit: cover;
+        object-position: bottom;
+    }
+}

@@ -1,0 +1,23 @@
+.quote {
+    align-items: center;
+    @extend %right-border;
+    display: flex;
+    font-family: "pp_pangaialight", Georgia, serif;
+    font-size: 32px;
+    justify-content: center;
+    padding: $space-default 64px;
+    width: $width-xlarge;
+    blockquote {
+        max-width: 65%;
+    }
+    cite a {
+        color: $color-text-grey;
+    }
+    @media ( max-width: $width-small ) {
+        font-size: 24px;
+        width: 150dvw;
+        blockquote {
+            width: 100%;
+        }
+    }
+}

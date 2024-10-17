@@ -1,0 +1,114 @@
+.portfolio {
+    @extend %right-border;
+    display: flex;
+    margin: $space-small 0;
+    &__role {
+        @extend %right-border;
+        display: flex;
+        height: 100%;
+        padding: $space-default;
+        h2 {
+            transform: rotate(180deg);
+            writing-mode: vertical-rl;
+        }
+    }
+    &__content {
+        display: flex;
+        padding: $space-default;
+        &__media {
+            align-items: center;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            img,
+            video {
+                height: 100%;
+                object-fit: cover;
+                width: 100%;
+            }
+        }
+    }
+    @media (max-width: $width-small) {
+        h3 {
+            font-size: 24px;
+        }
+        h2,
+        p {
+            font-size: 14px;
+        }
+        &__role,
+        &__content {
+            padding: $space-small;
+        }
+    }
+}
+
+// Layout
+.layout-stacked {
+    flex-direction: column;
+    .portfolio__content__media {
+        padding-bottom: $space-small;
+    }
+}
+.layout-split {
+    .portfolio__content__media {
+        padding-right: $space-default;
+        width: 75%;
+        video {
+            border-radius: 36px;
+        }
+    }
+    .portfolio__content__text {
+        width: 25%;
+    }
+    @media ( max-width: $width-small ) {
+        .portfolio__content__media {
+            padding-right: $space-small;
+            width: 65%;
+        }
+        .portfolio__content__text {
+            width: 35%;
+        }
+    }
+}
+
+// One-offs
+.onion img { border-top-right-radius: 36px; }
+.vox .portfolio__content__media video { border-bottom-right-radius: 0; }
+.nyt .portfolio__content__media img {
+    object-fit: contain;
+}
+.usat {
+    .portfolio__content__text {
+        margin-top: auto;
+    }
+    .portfolio__content__media {
+        padding: 0 0 0 $space-default;
+        img {
+            border-radius: 36px;
+            border-bottom-left-radius: 0;
+        }
+    }
+    @media ( max-width: $width-small ) {
+        .portfolio__content__media {
+            padding-left: $space-small;
+        }
+    }
+}
+.verge {
+    .portfolio__content__media img {
+        object-position: bottom;
+    }
+}
+.nytmag {
+    .portfolio__content__media {
+        padding-bottom: 0;
+        padding-top: $space-default;
+    }
+    .portfolio__content__media video {
+        border-top-right-radius: 36px;
+        object-position: top;
+    }
+}

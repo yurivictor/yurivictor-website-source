@@ -1,0 +1,38 @@
+h1 {
+    font-family: $font-serif;
+    font-size: 24px;
+    font-weight: 400;
+    text-align: center;
+}
+
+h2 {
+    color: $color-text-grey;
+    display: flex;
+    font-size: 14px;
+    gap: 8px;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+}
+
+h3 {
+    font-family: $font-serif;
+    font-size: 36px;
+    line-height: 1.2;
+    letter-spacing: 1.4px;
+    padding: 4px 0 12px 0;
+}
+
+p {
+    font-size: $font-default;
+    font-size: $font-sans-serif;
+}
+
+h2 strong,
+p strong {
+    font-family: $font-sans-serif-bold;
+    font-weight: 700;
+}
+
+.text-serif {
+    font-family: $font-serif;
+}

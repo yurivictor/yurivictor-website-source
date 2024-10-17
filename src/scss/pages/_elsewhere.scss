@@ -1,0 +1,24 @@
+.elsewhere {
+    @extend %right-border;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: $space-default 0;
+    h2 {
+        padding: $space-small $space-default 0 $space-default;
+    }
+    a {
+        display: block;
+        padding: 0 $space-default;
+    }
+    @media ( max-width: $width-small ) {
+        width: 100dvw;
+        padding: $space-small 0 $space-default 0;
+        h2,
+        a {
+            font-size: 16px;
+            padding-left: $space-small;
+            padding-right: $space-small;
+        }
+    }
+}

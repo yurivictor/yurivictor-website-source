@@ -1,0 +1,16 @@
+.footer {
+    background-color: $color-green;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    display: flex;
+    height: 100%;
+    padding: $space-default;
+    p {
+        text-orientation: mixed;
+        transform: rotate(180deg);
+        writing-mode: vertical-rl;
+    }
+    a {
+        color: white;
+    }
+}

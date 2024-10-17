@@ -1,0 +1,21 @@
+.width-xsmall { width: $width-xsmall; }
+.width-small { 
+    width: $width-small; 
+    @media ( max-width: $width-small ) {
+        width: 100dvw;
+    }
+}
+.width-medium { width: $width-medium; }
+.width-large { 
+    width: $width-large; 
+    @media ( max-width: $width-small ) {
+        width: 170dvw;
+    }
+}
+.width-xlarge { 
+    width: $width-xlarge; 
+    @media ( max-width: $width-small ) {
+        width: 170dvw;
+    }
+}
+.width-full { width: $width-full; }

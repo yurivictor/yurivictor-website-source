@@ -1,0 +1,13 @@
+.about {
+    @extend %right-border;
+    display: flex;
+    margin: $space-small 0;
+    padding: $space-default;
+    h2 {
+        margin-bottom: $space-small;
+    }
+    @media ( max-width: $width-small ) {
+        padding: $space-small;
+        width: 100dvw;
+    }
+}

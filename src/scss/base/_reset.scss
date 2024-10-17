@@ -1,0 +1,18 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    color: #2c2c2c;
+    font-family: $font-sans-serif;
+    font-size: $font-default;
+    height: 100vh;
+    line-height: 1.4;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+a {
+    color: black;
+    text-decoration: none;
+}
