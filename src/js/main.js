@@ -3,9 +3,7 @@
  * SCROLL SCROLL SCROLL
  */
 class App {
-    constructor() {
-        this.startX;
-        this.endX;
+    constructor () {
         this.endY
         this.startY;
         this.scrollLeft;
@@ -25,7 +23,7 @@ class App {
     handleTouchScrollMove ( touchEvent ) {
         touchEvent.preventDefault();
         this.endY = touchEvent.touches[0].pageY;
-        const scrollAmount = this.startY - this.endY;
+        const scrollAmount = ( this.startY - this.endY ) * .5;
         window.scrollBy( {
             left: scrollAmount,
             behavior: 'auto'
