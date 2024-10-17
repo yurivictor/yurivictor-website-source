@@ -141,6 +141,9 @@ p strong {
   color: white;
   text-decoration: none;
 }
+.header h1 {
+  padding-left: 24px;
+}
 @media (max-width: 480px) {
   .header {
     width: calc(100dvw - 24px);
