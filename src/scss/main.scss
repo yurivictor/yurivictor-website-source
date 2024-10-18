@@ -32,8 +32,8 @@
     display: flex;
     height: 100vh;
     width: max-content;
-    @media ( max-width: $width-small ) {
-        height: 100dvh;
+    @media ( max-width: $width-large ) {
+        height: 100svh;
     }
 }
 
@@ -48,6 +48,7 @@
     justify-content: center;
     padding: 0 0 $space-small 0;
     width: 100%;
+    picture,
     img,
     video {
         height: 100%;

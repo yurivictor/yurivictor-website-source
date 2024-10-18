@@ -22,6 +22,7 @@
             display: flex;
             justify-content: center;
             width: 100%;
+            picture,
             img,
             video {
                 height: 100%;
@@ -43,6 +44,11 @@
             padding: $space-small;
         }
     }
+    @media (max-height: 400px) {
+        &__content {
+            p { display: none; }
+        } 
+    }
 }
 
 // Layout
@@ -51,6 +57,18 @@
     .portfolio__content__media {
         padding-bottom: $space-small;
     }
+    @media ( max-height: 360px ) {
+        flex-direction: row;
+        h3 {
+            padding-left: $space-small;
+            width: 50%;
+        }
+        .portfolio__content__media {
+            padding-bottom: 0;
+            width: 50%;
+        }
+    }
+
 }
 .layout-split {
     .portfolio__content__media {
@@ -75,9 +93,11 @@
 }
 
 // One-offs
-.onion img { border-top-right-radius: 36px; }
+.onion img,
+.onion picture { border-top-right-radius: 36px; }
 .vox .portfolio__content__media video { border-bottom-right-radius: 0; }
-.nyt .portfolio__content__media img {
+.nyt .portfolio__content__media img,
+.nyt .portfolio__content__media picture {
     object-fit: contain;
 }
 .usat {
@@ -86,9 +106,18 @@
     }
     .portfolio__content__media {
         padding: 0 0 0 $space-default;
+        picture,
         img {
             border-radius: 36px;
             border-bottom-left-radius: 0;
+        }
+    }
+    @media ( max-width: 1210px ) {
+        .portfolio__content__text {
+            width: 40%;
+        }
+        .portfolio__content__media {
+            width: 60%;
         }
     }
     @media ( max-width: $width-small ) {
@@ -98,7 +127,8 @@
     }
 }
 .verge {
-    .portfolio__content__media img {
+    .portfolio__content__media img,
+    .portfolio__content__media picture {
         object-position: bottom;
     }
 }
@@ -110,5 +140,10 @@
     .portfolio__content__media video {
         border-top-right-radius: 36px;
         object-position: top;
+    }
+    @media ( max-height: 360px ) {
+        .portfolio__content__media {
+            padding-left: $space-small;
+        }
     }
 }

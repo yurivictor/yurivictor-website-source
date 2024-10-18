@@ -101,6 +101,11 @@ p strong {
     width: 100dvw;
   }
 }
+@media (max-height: 360px) {
+  .width-small {
+    width: 100dvw;
+  }
+}
 
 .width-medium {
   width: 768px;
@@ -178,6 +183,7 @@ p strong {
   justify-content: center;
   width: 100%;
 }
+.portfolio__content__media picture,
 .portfolio__content__media img,
 .portfolio__content__media video {
   height: 100%;
@@ -196,12 +202,30 @@ p strong {
     padding: 24px;
   }
 }
+@media (max-height: 400px) {
+  .portfolio__content p {
+    display: none;
+  }
+}
 
 .layout-stacked {
   flex-direction: column;
 }
 .layout-stacked .portfolio__content__media {
   padding-bottom: 24px;
+}
+@media (max-height: 360px) {
+  .layout-stacked {
+    flex-direction: row;
+  }
+  .layout-stacked h3 {
+    padding-left: 24px;
+    width: 50%;
+  }
+  .layout-stacked .portfolio__content__media {
+    padding-bottom: 0;
+    width: 50%;
+  }
 }
 
 .layout-split .portfolio__content__media {
@@ -224,7 +248,8 @@ p strong {
   }
 }
 
-.onion img {
+.onion img,
+.onion picture {
   border-top-right-radius: 36px;
 }
 
@@ -232,7 +257,8 @@ p strong {
   border-bottom-right-radius: 0;
 }
 
-.nyt .portfolio__content__media img {
+.nyt .portfolio__content__media img,
+.nyt .portfolio__content__media picture {
   object-fit: contain;
 }
 
@@ -242,9 +268,18 @@ p strong {
 .usat .portfolio__content__media {
   padding: 0 0 0 48px;
 }
+.usat .portfolio__content__media picture,
 .usat .portfolio__content__media img {
   border-radius: 36px;
   border-bottom-left-radius: 0;
+}
+@media (max-width: 1210px) {
+  .usat .portfolio__content__text {
+    width: 40%;
+  }
+  .usat .portfolio__content__media {
+    width: 60%;
+  }
 }
 @media (max-width: 480px) {
   .usat .portfolio__content__media {
@@ -252,7 +287,8 @@ p strong {
   }
 }
 
-.verge .portfolio__content__media img {
+.verge .portfolio__content__media img,
+.verge .portfolio__content__media picture {
   object-position: bottom;
 }
 
@@ -263,6 +299,11 @@ p strong {
 .nytmag .portfolio__content__media video {
   border-top-right-radius: 36px;
   object-position: top;
+}
+@media (max-height: 360px) {
+  .nytmag .portfolio__content__media {
+    padding-left: 24px;
+  }
 }
 
 .quote {
@@ -304,6 +345,11 @@ p strong {
     width: 100dvw;
   }
 }
+@media (max-height: 360px) {
+  .about p {
+    padding-left: 24px;
+  }
+}
 
 .elsewhere {
   display: flex;
@@ -328,6 +374,16 @@ p strong {
     font-size: 16px;
     padding-left: 24px;
     padding-right: 24px;
+  }
+}
+@media (max-height: 360px) {
+  .elsewhere {
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100dvw;
+  }
+  .elsewhere p {
+    width: 50dvw;
   }
 }
 
@@ -356,9 +412,9 @@ p strong {
   height: 100vh;
   width: max-content;
 }
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
   .container {
-    height: 100dvh;
+    height: 100svh;
   }
 }
 
@@ -374,6 +430,7 @@ p strong {
   padding: 0 0 24px 0;
   width: 100%;
 }
+.image-container picture,
 .image-container img,
 .image-container video {
   height: 100%;

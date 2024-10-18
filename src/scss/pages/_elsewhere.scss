@@ -21,4 +21,12 @@
             padding-right: $space-small;
         }
     }
+    @media ( max-height: 360px ) {
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100dvw;
+        p {
+            width: 50dvw;
+        }
+    }
 }

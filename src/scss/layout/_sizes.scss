@@ -4,6 +4,9 @@
     @media ( max-width: $width-small ) {
         width: 100dvw;
     }
+    @media ( max-height: 360px ) {
+        width: 100dvw;
+    }
 }
 .width-medium { width: $width-medium; }
 .width-large { 

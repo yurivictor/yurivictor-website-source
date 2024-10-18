@@ -9,7 +9,7 @@
         text-decoration: none;
     }
     h1 {
-        padding-left: $space-small
+        padding-left: $space-small;
     }
     @media ( max-width: $width-small ) {
         width: calc( 100dvw - $space-small );

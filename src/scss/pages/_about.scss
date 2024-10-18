@@ -5,9 +5,15 @@
     padding: $space-default;
     h2 {
         margin-bottom: $space-small;
+
     }
     @media ( max-width: $width-small ) {
         padding: $space-small;
         width: 100dvw;
+    }
+    @media ( max-height: 360px ) {
+        p {
+            padding-left: $space-small;
+        }
     }
 }
