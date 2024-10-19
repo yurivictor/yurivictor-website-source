@@ -10,12 +10,19 @@ class App {
         this.arrowStep = 100;
         this.spaceStep = window.innerWidth * 0.8; // 80% of viewport width for space bar
         this.bindEvents();
+        this.setHeight();
     }
     bindEvents () {
         document.addEventListener( 'touchstart', this.handleTouchScrollStart.bind( this ), { passive: true } );
         document.addEventListener( 'touchmove', this.handleTouchScrollMove.bind( this ),  { passive: false } );
         document.addEventListener( 'keydown', this.handleKeyScroll.bind( this ) );
         window.addEventListener( 'wheel', this.handleWheelScroll.bind( this ), { passive: false } );
+    }
+    setHeight () {
+        if ( window.matchMedia( '(pointer: coarse)' ).matches) {
+            console.log( 'setting height' );
+            document.getElementById( 'container' ).style.height = window.innerHeight + 'px';
+        }
     }
     handleTouchScrollStart ( event ) {
         this.startY = event.touches[0].pageY;
