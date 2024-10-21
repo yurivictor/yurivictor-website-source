@@ -256,6 +256,14 @@ p strong {
 .vox .portfolio__content__media video {
   border-bottom-right-radius: 0;
 }
+@media (max-width: 1210px) {
+  .vox .portfolio__content__text {
+    width: 30%;
+  }
+  .vox .portfolio__content__media {
+    width: 70%;
+  }
+}
 
 .nyt .portfolio__content__media img,
 .nyt .portfolio__content__media picture {

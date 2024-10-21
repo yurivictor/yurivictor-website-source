@@ -95,7 +95,19 @@
 // One-offs
 .onion img,
 .onion picture { border-top-right-radius: 36px; }
-.vox .portfolio__content__media video { border-bottom-right-radius: 0; }
+.vox {
+    .portfolio__content__media video { 
+        border-bottom-right-radius: 0; 
+    }
+    @media ( max-width: 1210px ) {
+        .portfolio__content__text {
+            width: 30%;
+        }
+        .portfolio__content__media {
+            width: 70%;
+        }
+    }
+}
 .nyt .portfolio__content__media img,
 .nyt .portfolio__content__media picture {
     object-fit: contain;
