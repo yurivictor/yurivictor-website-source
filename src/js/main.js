@@ -4,7 +4,7 @@
  */
 class App {
     constructor () {
-        this.endY
+        this.startX;
         this.startY;
         this.scrollLeft;
         this.arrowStep = 100;
@@ -25,16 +25,30 @@ class App {
         }
     }
     handleTouchScrollStart ( event ) {
-        this.startY = event.touches[0].pageY;
+        this.startX = event.touches[0].clientX;
+        this.startY = event.touches[0].clientY;
     }
     handleTouchScrollMove ( touchEvent ) {
         touchEvent.preventDefault();
-        this.endY = touchEvent.touches[0].pageY;
-        const scrollAmount = ( this.startY - this.endY ) * .5;
-        window.scrollBy( {
-            left: scrollAmount,
-            behavior: 'auto'
-        } );
+
+        let diffX = Math.abs( this.startX - touchEvent.touches[0].clientX );
+        let diffY = Math.abs( this.startY - touchEvent.touches[0].clientY );
+        let thresholdPixels = 10;
+        let scrollOffset = .5;
+
+        if ( diffX > thresholdPixels || diffY > thresholdPixels ) {
+            if ( diffX > diffY ) {
+                window.scrollBy( {
+                    left: ( this.startX - touchEvent.touches[0].clientX ) * scrollOffset,
+                    behavior: 'auto'
+                } );
+            } else {
+                window.scrollBy( {
+                    left: ( this.startY - touchEvent.touches[0].clientY ) * scrollOffset,
+                    behavior: 'auto'
+                } );
+            }
+        }
     }
     handleKeyScroll ( event ) {
         const spaceKey = event.key == " " || event.code == "Space" || event.keyCode == 32;
