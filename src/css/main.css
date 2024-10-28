@@ -264,6 +264,14 @@ p strong {
     width: 70%;
   }
 }
+@media (max-height: 620px) {
+  .vox .portfolio__content__text {
+    width: 40%;
+  }
+  .vox .portfolio__content__media {
+    width: 60%;
+  }
+}
 
 .nyt .portfolio__content__media img,
 .nyt .portfolio__content__media picture {

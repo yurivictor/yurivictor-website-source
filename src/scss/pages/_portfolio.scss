@@ -107,6 +107,14 @@
             width: 70%;
         }
     }
+    @media ( max-height: 620px ) {
+        .portfolio__content__text {
+            width: 40%;
+        }
+        .portfolio__content__media {
+            width: 60%;
+        }
+    }
 }
 .nyt .portfolio__content__media img,
 .nyt .portfolio__content__media picture {
