@@ -11,6 +11,10 @@ class App {
         this.spaceStep = window.innerWidth * 0.8; // 80% of viewport width for space bar
         this.batteryLevel = document.getElementById( 'battery-level' );
         this.location = document.getElementById( 'location' );
+        this.targetScrollLeft = 0;
+        this.currentScrollLeft = 0;
+        this.scrollVelocity = 0;
+        this.isScrolling = false;
         this.bindEvents();
         this.setHeight();
         this.logStuff();
@@ -143,10 +147,36 @@ class App {
         event.preventDefault();
         const scrollAmount = Math.abs( event.deltaX ) > Math.abs( event.deltaY ) ? event.deltaX : event.deltaY;
 
-        window.scrollBy( {
-            left: scrollAmount,
-            behavior: 'auto'
-        } );
+        // Accumulate scroll velocity
+        this.scrollVelocity += scrollAmount;
+
+        if ( !this.isScrolling ) {
+            this.isScrolling = true;
+            this.targetScrollLeft = window.scrollX;
+            this.smoothScroll();
+        }
+    }
+    smoothScroll () {
+        // Easing factor (0.1 = slower/smoother, 0.3 = faster/snappier)
+        const easing = 0.15;
+
+        // Apply easing to velocity (friction)
+        this.scrollVelocity *= 0.9;
+        this.targetScrollLeft += this.scrollVelocity;
+
+        // Calculate difference
+        const diff = this.targetScrollLeft - window.scrollX;
+
+        // If still moving significantly, keep scrolling
+        if ( Math.abs( diff ) > 0.5 || Math.abs( this.scrollVelocity ) > 0.5 ) {
+            window.scrollBy( diff * easing, 0 );
+            requestAnimationFrame( () => this.smoothScroll() );
+        } else {
+            // Reset when done
+            this.isScrolling = false;
+            this.targetScrollLeft = window.scrollX;
+            this.scrollVelocity = 0;
+        }
     }
     async fetchLocalData () {
         try {
