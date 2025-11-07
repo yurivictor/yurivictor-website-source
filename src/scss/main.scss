@@ -140,7 +140,7 @@
 .pennant {
     align-items: center;
     animation: wave 3s ease-in-out infinite;
-    background-color: $color-green;
+    background-color: #000000;
     color: white;
     display: flex;
     height: 100%;
@@ -169,7 +169,7 @@
     content: '';
     position: absolute;
     right: -25px;
-    border-left: 25px solid $color-green;
+    border-left: 25px solid #000000;
     border-top: 25px solid transparent;
     border-bottom: 25px solid transparent;
 
