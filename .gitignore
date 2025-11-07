@@ -1,4 +1,7 @@
 # Dependency directories
 node_modules/
 
+# Build artifacts
+css-dist/
+
 .DS_Store
