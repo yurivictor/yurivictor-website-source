@@ -4,4 +4,7 @@ node_modules/
 # Build artifacts
 css-dist/
 
+# Temporary files
+preview.zip
+
 .DS_Store
