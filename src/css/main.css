@@ -589,9 +589,9 @@ p strong {
 
 .text {
   font-family: "pp_pangaialight", Georgia, serif;
-  font-size: 70px;
+  font-size: 55px;
   line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   z-index: 1;
 }
 @media (max-width: 480px) {
