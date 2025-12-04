@@ -128,7 +128,7 @@
 .flag-container {
     bottom: 100px;
     left: 15%;
-    height: 50px;
+    height: 65px;
     perspective: 150px;
     position: absolute;
     transform-style: preserve-3d;
@@ -165,19 +165,11 @@
         height: 50px;
     }
 }
-.pennant::after {
-    content: '';
-    position: absolute;
-    right: -25px;
-    border-left: 25px solid #000000;
-    border-top: 25px solid transparent;
-    border-bottom: 25px solid transparent;
-
-}
 .text {
     font-family: "pp_pangaialight", Georgia, serif;
-    font-size: 18px;
-    padding-left: 12px;
+    font-size: 70px;
+    line-height: 1;
+    margin-bottom: 8px;
     z-index: 1;
     @media ( max-width: $width-small ) {
         font-size: 16px;
