@@ -262,6 +262,8 @@ p strong {
 .portfolio__content {
   display: flex;
   flex: 1;
+  min-height: 0;
+  overflow: hidden;
   padding: 48px;
 }
 .portfolio__content__media {
