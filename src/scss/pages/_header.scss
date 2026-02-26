@@ -1,7 +1,7 @@
 .header {
     @extend %right-border;
     display: flex;
-    width: calc( 100vw - $space-small );
+    width: 100vw;
 
     &__sun {
         background-color: #FBF9F5;
@@ -58,7 +58,7 @@
     }
 
     @media ( max-width: $width-medium ) {
-        width: calc( 200dvw - $space-small );
+        width: 200dvw;
 
         &__sun,
         &__about {

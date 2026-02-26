@@ -13,6 +13,13 @@
     font-style: italic;
 }
 @font-face {
+    font-family: 'pp_pangaiamedium';
+    src: url('/assets/PPPangaia-Medium.woff2') format('woff2'),
+        url('/assets/PPPangaia-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
     font-family: 'pp_neue_montrealregular';
     src: url('/assets/PPNeueMontreal-Regular.woff2') format('woff2'),
         url('/assets/PPNeueMontreal-Regular.woff') format('woff');

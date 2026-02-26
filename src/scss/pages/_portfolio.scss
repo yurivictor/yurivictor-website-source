@@ -1,27 +1,50 @@
 .portfolio {
     @extend %right-border;
     display: flex;
-    margin: $space-small 0;
+    flex-direction: column;
+
+    // Default brand colors (overridden per section below)
+    --brand-color: #000;
+    --brand-text: #fff;
+
     &__role {
-        @extend %right-border;
-        display: flex;
-        height: 100%;
-        padding: $space-default;
         h2 {
-            transform: rotate(180deg);
-            writing-mode: vertical-rl;
+            color: $color-default;
+            height: 46px;
+            gap: 0;
+            width: 100%;
+
+            span {
+                align-items: center;
+                display: flex;
+                gap: 0.25em;
+                padding: 12px $space-small;
+
+                &:first-child {
+                    background-color: var( --brand-color );
+                    color: var( --brand-text );
+
+                    strong {
+                        color: var( --brand-text );
+                    }
+                }
+            }
         }
     }
+
     &__content {
         display: flex;
+        flex: 1;
         padding: $space-default;
+
         &__media {
             align-items: center;
-            flex: 1;
-            overflow: hidden;
             display: flex;
+            flex: 1;
             justify-content: center;
+            overflow: hidden;
             width: 100%;
+
             picture,
             img,
             video {
@@ -31,7 +54,8 @@
             }
         }
     }
-    @media (max-width: $width-small) {
+
+    @media ( max-width: $width-small ) {
         h3 {
             font-size: 24px;
         }
@@ -39,26 +63,40 @@
         p {
             font-size: 14px;
         }
-        &__role,
+        &__role span {
+            padding: 8px $space-small;
+        }
         &__content {
             padding: $space-small;
         }
     }
-    @media (max-height: 400px) {
+
+    @media ( max-height: 400px ) {
         &__content {
             p { display: none; }
-        } 
+        }
     }
 }
+
+// Brand colors
+.onion  { --brand-color: #006C3A; --brand-text: #fff; }
+.vox    { --brand-color: #FFF302; --brand-text: #000; }
+.nyt    { --brand-color: #000000; --brand-text: #fff; }
+.nytmag { --brand-color: #000000; --brand-text: #fff; }
+.usat   { --brand-color: #009BFF; --brand-text: #fff; }
+.verge  { --brand-color: #4C02E8; --brand-text: #fff; }
 
 // Layout
 .layout-stacked {
     flex-direction: column;
+
     .portfolio__content__media {
         padding-bottom: $space-small;
     }
+
     @media ( max-height: 360px ) {
         flex-direction: row;
+
         h3 {
             padding-left: $space-small;
             width: 50%;
@@ -68,12 +106,13 @@
             width: 50%;
         }
     }
-
 }
+
 .layout-split {
     .portfolio__content__media {
         padding-right: $space-default;
         width: 75%;
+
         video {
             border-radius: 36px;
         }
@@ -81,6 +120,7 @@
     .portfolio__content__text {
         width: 25%;
     }
+
     @media ( max-width: $width-small ) {
         .portfolio__content__media {
             padding-right: $space-small;
@@ -95,37 +135,33 @@
 // One-offs
 .onion img,
 .onion picture { border-top-right-radius: 36px; }
+
 .vox {
-    .portfolio__content__media video { 
-        border-bottom-right-radius: 0; 
+    .portfolio__content__media video {
+        border-bottom-right-radius: 0;
     }
     @media ( max-width: 1210px ) {
-        .portfolio__content__text {
-            width: 30%;
-        }
-        .portfolio__content__media {
-            width: 70%;
-        }
+        .portfolio__content__text { width: 30%; }
+        .portfolio__content__media { width: 70%; }
     }
     @media ( max-height: 740px ) {
-        .portfolio__content__text {
-            width: 40%;
-        }
-        .portfolio__content__media {
-            width: 60%;
-        }
+        .portfolio__content__text { width: 40%; }
+        .portfolio__content__media { width: 60%; }
     }
 }
+
 .nyt .portfolio__content__media img,
 .nyt .portfolio__content__media picture {
     object-fit: contain;
 }
+
 .usat {
     .portfolio__content__text {
         margin-top: auto;
     }
     .portfolio__content__media {
         padding: 0 0 0 $space-default;
+
         picture,
         img {
             border-radius: 36px;
@@ -133,12 +169,8 @@
         }
     }
     @media ( max-width: 1210px ) {
-        .portfolio__content__text {
-            width: 40%;
-        }
-        .portfolio__content__media {
-            width: 60%;
-        }
+        .portfolio__content__text { width: 40%; }
+        .portfolio__content__media { width: 60%; }
     }
     @media ( max-width: $width-small ) {
         .portfolio__content__media {
@@ -146,12 +178,14 @@
         }
     }
 }
+
 .verge {
     .portfolio__content__media img,
     .portfolio__content__media picture {
         object-position: bottom;
     }
 }
+
 .nytmag {
     .portfolio__content__media {
         padding-bottom: 0;

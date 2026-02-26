@@ -1,8 +1,8 @@
 /******************************************************
  * 01 BASE
  ******************************************************/
-.elsewhere, .about, .quote, .portfolio__role, .portfolio, .header {
-  border-right: 1px solid #cccccc;
+.elsewhere, .about, .quote, .portfolio, .header {
+  border-right: 1px solid #E6E1DA;
 }
 
 @font-face {
@@ -16,6 +16,12 @@
   src: url("/assets/PPPangaia-UltralightItalic.woff2") format("woff2"), url("/assets/PPPangaia-UltralightItalic.woff") format("woff");
   font-weight: normal;
   font-style: italic;
+}
+@font-face {
+  font-family: "pp_pangaiamedium";
+  src: url("/assets/PPPangaia-Medium.woff2") format("woff2"), url("/assets/PPPangaia-Medium.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
 @font-face {
   font-family: "pp_neue_montrealregular";
@@ -146,7 +152,7 @@ p strong {
  ******************************************************/
 .header {
   display: flex;
-  width: calc(100vw - 24px);
+  width: 100vw;
 }
 .header__sun {
   background-color: #FBF9F5;
@@ -197,7 +203,7 @@ p strong {
 }
 @media (max-width: 768px) {
   .header {
-    width: calc(200dvw - 24px);
+    width: 200dvw;
   }
   .header__sun, .header__about {
     flex: 0 0 50%;
@@ -230,27 +236,40 @@ p strong {
 
 .portfolio {
   display: flex;
-  margin: 24px 0;
-}
-.portfolio__role {
-  display: flex;
-  height: 100%;
-  padding: 48px;
+  flex-direction: column;
+  --brand-color: #000;
+  --brand-text: #fff;
 }
 .portfolio__role h2 {
-  transform: rotate(180deg);
-  writing-mode: vertical-rl;
+  color: #2a2a2a;
+  height: 46px;
+  gap: 0;
+  width: 100%;
+}
+.portfolio__role h2 span {
+  align-items: center;
+  display: flex;
+  gap: 0.25em;
+  padding: 12px 24px;
+}
+.portfolio__role h2 span:first-child {
+  background-color: var(--brand-color);
+  color: var(--brand-text);
+}
+.portfolio__role h2 span:first-child strong {
+  color: var(--brand-text);
 }
 .portfolio__content {
   display: flex;
+  flex: 1;
   padding: 48px;
 }
 .portfolio__content__media {
   align-items: center;
-  flex: 1;
-  overflow: hidden;
   display: flex;
+  flex: 1;
   justify-content: center;
+  overflow: hidden;
   width: 100%;
 }
 .portfolio__content__media picture,
@@ -268,7 +287,10 @@ p strong {
   .portfolio p {
     font-size: 14px;
   }
-  .portfolio__role, .portfolio__content {
+  .portfolio__role span {
+    padding: 8px 24px;
+  }
+  .portfolio__content {
     padding: 24px;
   }
 }
@@ -276,6 +298,36 @@ p strong {
   .portfolio__content p {
     display: none;
   }
+}
+
+.onion {
+  --brand-color: #006C3A;
+  --brand-text: #fff;
+}
+
+.vox {
+  --brand-color: #FFF302;
+  --brand-text: #000;
+}
+
+.nyt {
+  --brand-color: #000000;
+  --brand-text: #fff;
+}
+
+.nytmag {
+  --brand-color: #000000;
+  --brand-text: #fff;
+}
+
+.usat {
+  --brand-color: #009BFF;
+  --brand-text: #fff;
+}
+
+.verge {
+  --brand-color: #4C02E8;
+  --brand-text: #fff;
 }
 
 .layout-stacked {
@@ -539,7 +591,7 @@ p strong {
 
 .separator {
   height: 1px;
-  background-color: #cccccc;
+  background-color: #E6E1DA;
   width: 100%;
 }
 
@@ -593,11 +645,7 @@ p strong {
 }
 
 .tom-foolery-bottom {
-  bottom: 24px;
-}
-
-.tom-foolery-left {
-  left: 24px;
+  bottom: 46px;
 }
 
 .tom-foolery-right {
@@ -605,7 +653,7 @@ p strong {
 }
 
 .tom-foolery-top {
-  top: 24px;
+  top: 46px;
 }
 
 .flag-container {
@@ -642,7 +690,7 @@ p strong {
 }
 
 .pennant::before {
-  background: #cccccc;
+  background: #E6E1DA;
   height: 75px;
   content: "";
   left: 0;
@@ -680,7 +728,7 @@ p strong {
 
 #scroll-arrow {
   animation: bounce 2s infinite;
-  color: #cccccc;
+  color: #E6E1DA;
   display: none;
   font-family: "pp_neue_montrealbold", Helvetica, sans-serif;
   font-size: 12px;
@@ -731,7 +779,7 @@ p strong {
 }
 
 .divider {
-  background-color: #cccccc;
+  background-color: #E6E1DA;
   height: 30px;
   margin-right: 10px;
   transform: rotate(65deg);

@@ -36,7 +36,7 @@ class SunOrb {
 
                 float gradient = smoothstep( 0.5, 0.0, dist );
 
-                float grain = noise( vUv * 600.0 );
+                float grain = noise( vUv * 600.0 + time * 0.05 );
                 grain = ( grain - 0.5 ) * 0.15;
 
                 float pulse = 0.02 * sin( time * 0.5 );
