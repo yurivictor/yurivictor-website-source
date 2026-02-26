@@ -27,18 +27,20 @@
 <body>
     <div id="container" class="container">
         <header id="home" class="header">
-            <h1>
-                Yuri Victor <em>is</em> Making Things.
-            </h1>
-            <div id="battery-level" class="battery-level"></div>
-            <div id="location" class="location"></div>
-            <div class="flag-container">
-                <div class="pennant">
-                    <div class="text">&#9760;</div>
+            <div class="header__sun" id="header-sun"></div>
+            <div class="header__about">
+                <h1>Yuri Victor is<br>Making Things</h1>
+                <div class="header__photo">
+                    <picture>
+                        <source type="image/webp" srcset="images/yuri_victor_trees.webp">
+                        <source type="image/jpeg" srcset="images/yuri_victor_trees.jpg">
+                        <img src="images/yuri_victor_trees.jpg" alt="Yuri Victor">
+                    </picture>
                 </div>
+                <p>Creative technologist with 20 years experience innovating huge digital products and systems. Previously, co-founded Vox.com, launched the largest CMS in publishing, and spent eight years developing AI tools for storytellers. In my free time I volunteer at The Society for News Design helping the next generation of designers.</p>
             </div>
-            <div id="scroll-arrow" role="alert" aria-live="polite" aria-label="Scroll for more content">Scroll <span>&#x203A;</span></div>
         </header>
+        <div id="scroll-arrow" role="alert" aria-live="polite" aria-label="Scroll for more content">Scroll <span>&#x203A;</span></div>
         <section id="onion" class="portfolio onion">
             <div class="portfolio__role">
                 <h2>
@@ -172,17 +174,6 @@
                 <cite><a href="https://x.com/AllisonRockey/status/517437406543638528">&mdash; Allison Rockey</a></cite>
             </blockquote>
         </section>
-        <section id="about" class="about layout-stacked width-medium">
-            <h2>About me</h2>
-            <div class="image-container">
-                <picture alt="Yuri Victor looks into the distance" loading="lazy"> 
-                    <source type="image/webp" srcset="images/yuri_victor_trees.webp"> 
-                    <source type="image/jpeg" srcset="images/yuri_victor_trees.jpg"> 
-                    <img src="images/yuri_victor_trees.jpg" alt="">
-                </picture>
-            </div>
-            <p>Over 20 years, as a <strong>designer, engineer, and journalist</strong>, I've transformed <strong>hundreds of websites</strong>, launched Arc, the world's largest publishing CMS, and <strong>co-founded Vox.com</strong>, which became the highest trafficked politics site within six months. Most recently, I <strong>built AI tools</strong> for readers and journalists with The New York Times, relaunched The Onion, and served on the board for SND, teaching the next generation of designers.</p>
-        </section>
         <section class="elsewhere width-xsmall">
             <h2>Elsewhere</h2>
 
@@ -212,6 +203,7 @@
     <div role="presentation" class="tom-foolery tom-foolery-horizontal tom-foolery-bottom"></div>
     <div role="presentation" class="tom-foolery tom-foolery-vertical tom-foolery-left"></div>
     <div role="presentation" class="tom-foolery tom-foolery-horizontal tom-foolery-top"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="/js/main.js"></script>
 </body>
 </html>

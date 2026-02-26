@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body, html { 
+            margin: 0; 
+            height: 100%; 
+            overflow: hidden;
+        }
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: #A37C2D;
+        }
+    </style>
+</head>
+<body>
+    <div id="background"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        class SunOrb {
+            constructor () {
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                this.renderer = new THREE.WebGLRenderer({
+                    antialias: true,
+                    alpha: true
+                });
+                this.renderer.setClearColor(0x000000, 0);
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                document.getElementById('background').appendChild(this.renderer.domElement);
+
+                this.createSun();
+                this.addLighting();
+                this.setupCamera();
+                this.setupResizeHandler();
+                this.animate();
+            }
+
+            createSun () {
+                const geometry = new THREE.SphereGeometry(1, 64, 64);
+
+                const fragmentShader = `
+                    uniform float time;
+                    varying vec3 vNormal;
+                    varying vec3 vPosition;
+
+                    // Rotation matrix
+                    const mat2 m = mat2(0.80, 0.60, -0.60, 0.80);
+                    
+                    // Noise function
+                    float noise(vec2 p) {
+                        return sin(p.x) * sin(p.y);
+                    }
+                    
+                    // 4-layer Fractal Brownian Motion
+                    float fbm4(vec2 p) {
+                        float f = 0.0;
+                        f += 0.5000 * noise(p); 
+                        p = m * p * 2.02;
+                        f += 0.2500 * noise(p); 
+                        p = m * p * 2.03;
+                        f += 0.1250 * noise(p); 
+                        p = m * p * 2.01;
+                        f += 0.0625 * noise(p);
+                        return f / 0.9375;
+                    }
+                    
+                    // 6-layer Fractal Brownian Motion
+                    float fbm6(vec2 p) {
+                        float f = 0.0;
+                        f += 0.500000 * (0.5 + 0.5 * noise(p)); 
+                        p = m * p * 2.02;
+                        f += 0.250000 * (0.5 + 0.5 * noise(p)); 
+                        p = m * p * 2.03;
+                        f += 0.125000 * (0.5 + 0.5 * noise(p)); 
+                        p = m * p * 2.01;
+                        f += 0.062500 * (0.5 + 0.5 * noise(p)); 
+                        p = m * p * 2.04;
+                        f += 0.031250 * (0.5 + 0.5 * noise(p)); 
+                        p = m * p * 2.01;
+                        f += 0.015625 * (0.5 + 0.5 * noise(p));
+                        return f / 0.96875;
+                    }
+                    
+                    // 2D noise vector using 4-layer FBM
+                    vec2 fbm4_2(vec2 p) {
+                        return vec2(
+                            fbm4(p), 
+                            fbm4(p + vec2(7.8, 0.0))
+                        );
+                    }
+                    
+                    // 2D noise vector using 6-layer FBM
+                    vec2 fbm6_2(vec2 p) {
+                        return vec2(
+                            fbm6(p + vec2(16.8, 0.0)), 
+                            fbm6(p + vec2(11.5, 0.0))
+                        );
+                    }
+                    
+                    void main() {
+                        // Normalize coordinates
+                        vec2 uv = gl_FragCoord.xy / vec2(1600, 900);
+                        uv = uv * 2.0 - 1.0;
+                        uv.x *= 16.0/9.0;
+                        
+                        // Time-based warping
+                        uv += 0.03 * sin(vec2(0.27, 0.23) * time + length(uv) * vec2(4.1, 4.3));
+                        
+                        // Multi-layer noise generation
+                        vec2 o = fbm4_2(3.0 * uv);
+                        o += 0.04 * sin(vec2(0.12, 0.14) * time + length(o));
+
+                        vec2 n = fbm6_2(8.0 * o);
+                        
+                        // Color mapping
+                        vec3 color1 = vec3(187.0/255.0, 157.0/255.0, 109.0/255.0); // #BB9D6D
+                        vec3 color2 = vec3(194.0/255.0, 150.0/255.0, 65.0/255.0);  // #C29641
+                        vec3 color3 = vec3(163.0/255.0, 124.0/255.0, 45.0/255.0);  // #A37C2D (background color)
+
+                        
+                        // Blend colors based on noise
+                        float f = 0.5 + 0.5 * fbm4(5.0 * uv + 12.0 * n);
+
+                        // Default color mix
+                        // vec3 finalColor = mix(color1, color2, f);
+
+                        // Shift hue over time
+                        vec3 finalColor = mix(color1, color2, 
+                            0.5 + 0.5 * sin(time * 0.5 + length(n) * 2.0)
+                        );
+
+                        // Use additional noise layers to drive color variation
+                        // float colorNoise = fbm6(uv * 5.0 + time * 0.1);
+                        // vec3 finalColor = mix(
+                        //     color1, 
+                        //     color2, 
+                        //     smoothstep(0.3, 0.7, colorNoise)
+                        // );
+
+                        // Gradients with multiple stops
+                        // vec3 colorA = vec3(187.0/255.0, 157.0/255.0, 109.0/255.0);
+                        // vec3 colorB = vec3(194.0/255.0, 150.0/255.0, 65.0/255.0);
+                        // vec3 colorC = vec3(210.0/255.0, 170.0/255.0, 80.0/255.0);
+                        // vec3 colorD = vec3(163.0/255.0, 124.0/255.0, 45.0/255.0);
+
+                        // vec3 finalColor = mix(
+                        //     mix(colorA, colorB, f),
+                        //     mix(colorC, colorD, f),
+                        //     abs(sin(time * 0.3))
+                        // );
+
+                        // Multi-layer blending
+                        // vec3 finalColor = mix(
+                        //     mix(color1, color2, f),
+                        //     color3, 
+                        //     abs(sin(time)) * 0.5 * 
+                        //     (1.0 + 0.2 * sin(length(n) * 10.0 + time))
+                        // );
+                        
+                        // Optional: add some depth with noise interaction
+                        finalColor *= 1.0 + 0.2 * sin(length(n) * 10.0);
+
+                        // Fuzzy edges using fresnel effect
+                        vec3 viewDirection = normalize(vPosition);
+                        float fresnel = abs(dot(viewDirection, vNormal));
+                        float alpha = smoothstep(0.0, 0.5, fresnel);
+
+                        gl_FragColor = vec4(finalColor, alpha);
+                    }
+                `;
+
+                const vertexShader = `
+                    uniform float time;
+                    varying vec2 vUv;
+                    varying vec3 vNormal;
+                    varying vec3 vPosition;
+
+                    void main() {
+                        vUv = uv;
+                        vNormal = normalize(normalMatrix * normal);
+
+                        // Optional: slight surface displacement
+                        vec3 displaced = position + normal *
+                            (0.015 * sin(time * 0.4 + length(position) * 5.0));
+
+                        vec4 mvPosition = modelViewMatrix * vec4(displaced, 1.0);
+                        vPosition = mvPosition.xyz;
+
+                        gl_Position = projectionMatrix * mvPosition;
+                    }
+                `;
+
+                const material = new THREE.ShaderMaterial({
+                    uniforms: {
+                        time: { value: 0 },
+                        resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+                    },
+                    vertexShader,
+                    fragmentShader,
+                    transparent: true,
+                    side: THREE.DoubleSide
+                });
+
+                this.sun = new THREE.Mesh(geometry, material);
+                this.scene.add(this.sun);
+            }
+            
+            addLighting() {
+                // Add some ambient light
+                const ambientLight = new THREE.AmbientLight(0x404040);
+                this.scene.add(ambientLight);
+
+                // Add a directional light
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+                directionalLight.position.set(1, 1, 1);
+                this.scene.add(directionalLight);
+            }
+
+            setupCamera() {
+                // Position the camera
+                this.camera.position.z = 3;
+            }
+
+            setupResizeHandler() {
+                window.addEventListener('resize', () => {
+                    this.camera.aspect = window.innerWidth / window.innerHeight;
+                    this.camera.updateProjectionMatrix();
+                    this.renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+            }
+
+            animate() {
+                requestAnimationFrame(() => this.animate());
+
+                // Rotate the sun
+                this.sun.rotation.y += 0.005;
+                this.sun.rotation.x += 0.002;
+
+                // Update time for shader
+                this.sun.material.uniforms.time.value = performance.now() * 0.001;
+
+                this.renderer.render(this.scene, this.camera);
+            }
+        }
+
+        // Initialize on page load
+        new SunOrb();
+    </script>
+</body>
+</html>

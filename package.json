@@ -13,8 +13,9 @@
     "build:css-lint": "postcss src/css/*.css --use cssnano -d dist/css",
     "build:css-minify": "css-minify -d dist/css",
     "build:js-minify": "uglifyjs src/js/*.js --compress --mangle --output dist/js/main.js",
+    "build:copy-assets": "cp src/assets/*.woff src/assets/*.woff2 dist/assets/",
     "build:copy-html": "cp src/index.html dist/",
-    "build": "npm-run-all build:scss build:autoprefixer build:css-lint build:css-minify build:js-minify build:copy-html "
+    "build": "npm-run-all build:scss build:autoprefixer build:css-lint build:css-minify build:js-minify build:copy-assets build:copy-html"
   },
   "keywords": [],
   "author": "",

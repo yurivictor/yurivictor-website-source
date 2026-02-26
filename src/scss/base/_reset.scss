@@ -6,7 +6,9 @@
 body {
     color: #2c2c2c;
     font-family: $font-sans-serif;
+    font-feature-settings: "dlig" 1, "liga" 1;
     font-size: $font-default;
+    font-variant-ligatures: discretionary-ligatures;
     height: 100vh;
     line-height: 1.4;
     overflow-y: hidden;

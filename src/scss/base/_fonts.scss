@@ -1,21 +1,28 @@
 @font-face {
-    font-family: 'pp_pangaialight';
-    src: url('/assets/pppangaia-light-webfont.woff2') format('woff2'),
-        url('/assets/pppangaia-light-webfont.woff') format('woff');
+    font-family: 'pp_pangaiaultralight';
+    src: url('/assets/PPPangaia-Ultralight.woff2') format('woff2'),
+        url('/assets/PPPangaia-Ultralight.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
+    font-family: 'pp_pangaiaultralightitalic';
+    src: url('/assets/PPPangaia-UltralightItalic.woff2') format('woff2'),
+        url('/assets/PPPangaia-UltralightItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
     font-family: 'pp_neue_montrealregular';
-    src: url('/assets/ppneuemontreal-regular-webfont.woff2') format('woff2'),
-        url('/assets/ppneuemontreal-regular-webfont.woff') format('woff');
+    src: url('/assets/PPNeueMontreal-Regular.woff2') format('woff2'),
+        url('/assets/PPNeueMontreal-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
     font-family: 'pp_neue_montrealbold';
-    src: url('/assets/ppneuemontreal-bold-webfont.woff2') format('woff2'),
-        url('/assets/ppneuemontreal-bold-webfont.woff') format('woff');
+    src: url('/assets/PPNeueMontreal-Bold.woff2') format('woff2'),
+        url('/assets/PPNeueMontreal-Bold.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }

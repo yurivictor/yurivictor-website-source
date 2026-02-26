@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body, html { 
+            margin: 0; 
+            height: 100%; 
+            overflow: hidden;
+        }
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: #A37C2D;
+        }
+    </style>
+</head>
+<body>
+    <div id="background"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        class SunOrb {
+            constructor () {
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                this.renderer = new THREE.WebGLRenderer({
+                    antialias: true,
+                    alpha: true
+                });
+                this.renderer.setClearColor(0x000000, 0);
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                document.getElementById('background').appendChild(this.renderer.domElement);
+
+                this.createSun();
+                this.addLighting();
+                this.setupCamera();
+                this.setupResizeHandler();
+                this.animate();
+            }
+
+            createSun () {
+                const geometry = new THREE.SphereGeometry(1, 64, 64);
+
+                const fragmentShader = `
+                    uniform float time;
+                    varying vec3 vNormal;
+                    varying vec3 vPosition;
+                    varying vec2 vUv;
+
+                    // Simple noise for grain texture
+                    float noise(vec2 p) {
+                        return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+                    }
+
+                    void main() {
+                        // Use UV coordinates for radial gradient
+                        vec2 center = vec2(0.5, 0.5);
+                        float dist = length(vUv - center);
+
+                        // Create smooth radial gradient
+                        float gradient = smoothstep(0.5, 0.0, dist);
+
+                        // Add subtle animated grain - using floor() to slow down updates
+                        float slowTime = floor(time * 2.0) / 2.0; // Update every 0.5 seconds
+                        float grain = noise(vUv * 600.0 + slowTime);
+                        grain = (grain - 0.5) * 0.4; // Subtle grain intensity
+
+                        // Gentle pulsing
+                        float pulse = 0.02 * sin(time * 0.5);
+                        gradient = gradient + pulse;
+
+                        // Color palette - gold to light/white
+                        vec3 centerColor = vec3(235.0/255.0, 210.0/255.0, 150.0/255.0); // Lighter gold center
+                        vec3 midColor = vec3(240.0/255.0, 220.0/255.0, 180.0/255.0);    // Light gold (dominant)
+                        vec3 edgeColor = vec3(250.0/255.0, 245.0/255.0, 240.0/255.0);   // Nearly white (minimal)
+
+                        // Multi-stop gradient - mostly light gold
+                        vec3 finalColor;
+                        if (gradient > 0.7) {
+                            finalColor = mix(midColor, centerColor, (gradient - 0.7) / 0.3);
+                        } else if (gradient > 0.2) {
+                            finalColor = midColor; // Keep light gold for most of the orb
+                        } else {
+                            finalColor = mix(edgeColor, midColor, gradient / 0.2);
+                        }
+
+                        // Apply grain
+                        finalColor += grain;
+
+                        // Soft edges using fresnel - less transparency
+                        vec3 viewDirection = normalize(vPosition);
+                        float fresnel = abs(dot(viewDirection, vNormal));
+                        float alpha = smoothstep(0.0, 0.8, fresnel) * smoothstep(0.6, 0.0, dist);
+
+                        gl_FragColor = vec4(finalColor, alpha);
+                    }
+                `;
+
+                const vertexShader = `
+                    uniform float time;
+                    varying vec2 vUv;
+                    varying vec3 vNormal;
+                    varying vec3 vPosition;
+
+                    void main() {
+                        vUv = uv;
+                        vNormal = normalize(normalMatrix * normal);
+
+                        // Keep surface smooth - no displacement
+                        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                        vPosition = mvPosition.xyz;
+
+                        gl_Position = projectionMatrix * mvPosition;
+                    }
+                `;
+
+                const material = new THREE.ShaderMaterial({
+                    uniforms: {
+                        time: { value: 0 },
+                        resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+                    },
+                    vertexShader,
+                    fragmentShader,
+                    transparent: true,
+                    side: THREE.DoubleSide
+                });
+
+                this.sun = new THREE.Mesh(geometry, material);
+                this.scene.add(this.sun);
+            }
+            
+            addLighting() {
+                // Add some ambient light
+                const ambientLight = new THREE.AmbientLight(0x404040);
+                this.scene.add(ambientLight);
+
+                // Add a directional light
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+                directionalLight.position.set(1, 1, 1);
+                this.scene.add(directionalLight);
+            }
+
+            setupCamera() {
+                // Position the camera
+                this.camera.position.z = 3;
+            }
+
+            setupResizeHandler() {
+                window.addEventListener('resize', () => {
+                    this.camera.aspect = window.innerWidth / window.innerHeight;
+                    this.camera.updateProjectionMatrix();
+                    this.renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+            }
+
+            animate() {
+                requestAnimationFrame(() => this.animate());
+
+                // Rotate the sun
+                this.sun.rotation.y += 0.005;
+                this.sun.rotation.x += 0.002;
+
+                // Update time for shader
+                this.sun.material.uniforms.time.value = performance.now() * 0.001;
+
+                this.renderer.render(this.scene, this.camera);
+            }
+        }
+
+        // Initialize on page load
+        new SunOrb();
+    </script>
+</body>
+</html>

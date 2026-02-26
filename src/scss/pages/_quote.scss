@@ -2,7 +2,7 @@
     align-items: center;
     @extend %right-border;
     display: flex;
-    font-family: "pp_pangaialight", Georgia, serif;
+    font-family: $font-serif;
     font-size: 32px;
     justify-content: center;
     padding: $space-default 64px;
