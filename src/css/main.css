@@ -107,44 +107,40 @@ p strong {
   width: 320px;
 }
 
-.width-small {
-  width: 480px;
-}
-@media (max-width: 480px) {
-  .width-small {
-    width: 100dvw;
-  }
-}
-@media (max-height: 360px) {
-  .width-small {
-    width: 100dvw;
-  }
-}
-
 .width-medium {
   width: 768px;
 }
 
-.width-large {
-  width: 1024px;
+.width-third {
+  width: 33.3333333333vw;
 }
-@media (max-width: 480px) {
-  .width-large {
-    width: 170dvw;
+@media (max-width: 768px) {
+  .width-third {
+    width: 100dvw;
+  }
+}
+@media (max-height: 360px) {
+  .width-third {
+    width: 100dvw;
   }
 }
 
-.width-xlarge {
-  width: 1280px;
+.width-two-thirds {
+  width: 66.6666666667vw;
 }
-@media (max-width: 480px) {
-  .width-xlarge {
-    width: 170dvw;
+@media (max-width: 768px) {
+  .width-two-thirds {
+    width: 200dvw;
   }
 }
 
 .width-full {
   width: 100vw;
+}
+@media (max-width: 768px) {
+  .width-full {
+    width: 300dvw;
+  }
 }
 
 /******************************************************
@@ -186,6 +182,9 @@ p strong {
   line-height: 1.1;
   padding: 0;
   text-transform: uppercase;
+}
+.header__about h1 em {
+  text-transform: none;
 }
 .header__about p {
   font-family: "pp_pangaiaultralight", Georgia, serif;
@@ -230,7 +229,7 @@ p strong {
     font-size: clamp(24px, 8vw, 40px);
   }
   .header__about p {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -332,6 +331,71 @@ p strong {
   --brand-text: #fff;
 }
 
+.apple {
+  --brand-color: #6e6e73;
+  --brand-text: #fff;
+}
+
+.layout-full {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  padding: 0;
+}
+.layout-full .portfolio__content__text {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+}
+.layout-full .portfolio__content__quote {
+  font-family: "pp_pangaiaultralightitalic", Georgia, serif;
+  padding: 48px;
+}
+.layout-full .portfolio__content__quote blockquote {
+  display: inline;
+  font-size: clamp(28px, 6vw, 120px);
+  line-height: 1;
+}
+.layout-full .portfolio__content__quote cite {
+  display: inline;
+  font-family: "pp_pangaiaultralightitalic", Georgia, serif;
+}
+.layout-full .portfolio__content__text__copy {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+.layout-full .portfolio__content__heading {
+  padding: 48px;
+}
+.layout-full .portfolio__content__heading h3 {
+  font-family: "pp_pangaiaultralight", Georgia, serif;
+  font-size: 36px;
+  letter-spacing: 1.4px;
+  line-height: 1.2;
+}
+.layout-full .portfolio__content__body {
+  column-count: 2;
+  column-gap: 48px;
+  overflow-y: auto;
+  padding: 48px;
+}
+.layout-full .portfolio__content__body .coverage {
+  margin-top: auto;
+}
+.layout-full .portfolio__content__video {
+  overflow: hidden;
+}
+.layout-full .portfolio__content__video video {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+@media (max-width: 768px) {
+  .layout-full {
+    grid-template-columns: 200dvw 100dvw;
+  }
+}
+
 .layout-stacked {
   flex-direction: column;
 }
@@ -375,26 +439,6 @@ p strong {
 .onion img,
 .onion picture {
   border-top-right-radius: 36px;
-}
-
-.vox .portfolio__content__media video {
-  border-bottom-right-radius: 0;
-}
-@media (max-width: 1210px) {
-  .vox .portfolio__content__text {
-    width: 30%;
-  }
-  .vox .portfolio__content__media {
-    width: 70%;
-  }
-}
-@media (max-height: 740px) {
-  .vox .portfolio__content__text {
-    width: 40%;
-  }
-  .vox .portfolio__content__media {
-    width: 60%;
-  }
 }
 
 .nyt .portfolio__content__media img,
@@ -444,6 +488,16 @@ p strong {
   .nytmag .portfolio__content__media {
     padding-left: 24px;
   }
+}
+
+.apple .portfolio__content {
+  background: #f5f5f7;
+  padding: 0;
+}
+.apple .portfolio__content__media svg {
+  fill: #a1a1a6;
+  height: auto;
+  width: 100px;
 }
 
 .quote {
@@ -554,7 +608,7 @@ p strong {
 }
 @media (pointer: coarse) {
   .container {
-    height: 100svh;
+    height: calc(100svh - 46px);
   }
 }
 
@@ -627,86 +681,6 @@ p strong {
 /******************************************************
  * 10 Weird shit
  ******************************************************/
-.tom-foolery {
-  background-color: #E6E1DA;
-  z-index: 1;
-}
-
-.tom-foolery-vertical {
-  height: 100%;
-  top: 0;
-  position: absolute;
-  width: 1px;
-}
-
-.tom-foolery-horizontal {
-  height: 1px;
-  left: 0;
-  position: fixed;
-  width: 100%;
-}
-
-.tom-foolery-bottom {
-  bottom: 46px;
-}
-
-.tom-foolery-right {
-  right: 24px;
-}
-
-.tom-foolery-top {
-  top: 46px;
-}
-
-.flag-container {
-  bottom: 100px;
-  left: 15%;
-  height: 65px;
-  perspective: 150px;
-  position: absolute;
-  transform-style: preserve-3d;
-  width: 100px;
-}
-@media (max-width: 480px) {
-  .flag-container {
-    bottom: 75px;
-  }
-}
-
-.pennant {
-  align-items: center;
-  animation: wave 3s ease-in-out infinite;
-  background-color: #000000;
-  color: white;
-  display: flex;
-  height: 100%;
-  position: relative;
-  justify-content: center;
-  transform-origin: left;
-  width: 100%;
-}
-@media (max-width: 480px) {
-  .pennant {
-    width: 80px;
-  }
-}
-
-.pennant::before {
-  background: #E6E1DA;
-  height: 75px;
-  content: "";
-  left: 0;
-  bottom: -75px;
-  position: absolute;
-  width: 1px;
-}
-@media (max-width: 480px) {
-  .pennant::before {
-    bottom: -50px;
-    height: 50px;
-  }
-}
-
 .text {
   font-family: "pp_pangaialight", Georgia, serif;
   font-size: 55px;

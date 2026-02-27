@@ -87,8 +87,78 @@
 .nytmag { --brand-color: #000000; --brand-text: #fff; }
 .usat   { --brand-color: #009BFF; --brand-text: #fff; }
 .verge  { --brand-color: #4C02E8; --brand-text: #fff; }
+.apple  { --brand-color: #6e6e73; --brand-text: #fff; }
 
 // Layout
+.layout-full {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    padding: 0;
+
+    .portfolio__content__text {
+        display: grid;
+        grid-template-rows: 1fr auto;
+        overflow: hidden;
+    }
+
+    .portfolio__content__quote {
+        font-family: $font-serif-italic;
+        padding: $space-default;
+
+        blockquote {
+            display: inline;
+            
+            font-size: clamp( 28px, 6vw, 120px );
+            line-height: 1;
+        }
+
+        cite {
+            display: inline;
+            font-family: $font-serif-italic;
+        }
+    }
+
+    .portfolio__content__text__copy {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+    }
+
+    .portfolio__content__heading {
+        padding: $space-default;
+
+        h3 {
+            font-family: $font-serif;
+            font-size: 36px;
+            letter-spacing: 1.4px;
+            line-height: 1.2;
+        }
+    }
+
+    .portfolio__content__body {
+        column-count: 2;
+        column-gap: $space-default;
+        overflow-y: auto;
+        padding: $space-default;
+
+        .coverage { margin-top: auto; }
+    }
+
+    .portfolio__content__video {
+        overflow: hidden;
+
+        video {
+            display: block;
+            height: 100%;
+            object-fit: cover;
+            width: 100%;
+        }
+    }
+
+    @media ( max-width: $width-medium ) {
+        grid-template-columns: 200dvw 100dvw;
+    }
+}
+
 .layout-stacked {
     flex-direction: column;
 
@@ -138,19 +208,6 @@
 .onion img,
 .onion picture { border-top-right-radius: 36px; }
 
-.vox {
-    .portfolio__content__media video {
-        border-bottom-right-radius: 0;
-    }
-    @media ( max-width: 1210px ) {
-        .portfolio__content__text { width: 30%; }
-        .portfolio__content__media { width: 70%; }
-    }
-    @media ( max-height: 740px ) {
-        .portfolio__content__text { width: 40%; }
-        .portfolio__content__media { width: 60%; }
-    }
-}
 
 .nyt .portfolio__content__media img,
 .nyt .portfolio__content__media picture {
@@ -201,5 +258,18 @@
         .portfolio__content__media {
             padding-left: $space-small;
         }
+    }
+}
+
+.apple {
+    .portfolio__content {
+        background: #f5f5f7;
+        padding: 0;
+    }
+
+    .portfolio__content__media svg {
+        fill: #a1a1a6;
+        height: auto;
+        width: 100px;
     }
 }

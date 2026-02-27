@@ -33,7 +33,7 @@
     height: 100vh;
     width: max-content;
     @media (pointer: coarse) {
-        height: 100svh;
+        height: calc( 100svh - 46px );
     }
 }
 
@@ -104,66 +104,7 @@
 /******************************************************
  * 10 Weird shit
  ******************************************************/
-.tom-foolery {
-    background-color: #E6E1DA;
-    z-index: 1;
-}
-.tom-foolery-vertical {
-    height: 100%;
-    top:0;
-    position: absolute;
-    width: 1px;
-}
-.tom-foolery-horizontal {
-    height: 1px;
-    left: 0;
-    position: fixed;
-    width: 100%;
-}
-.tom-foolery-bottom { bottom: 46px; }
-.tom-foolery-right { right: 24px; }
-.tom-foolery-top { top: 46px; }
 
-.flag-container {
-    bottom: 100px;
-    left: 15%;
-    height: 65px;
-    perspective: 150px;
-    position: absolute;
-    transform-style: preserve-3d;
-    width: 100px;
-    @media ( max-width: $width-small ) {
-        bottom: 75px;
-    }
-}
-.pennant {
-    align-items: center;
-    animation: wave 3s ease-in-out infinite;
-    background-color: #000000;
-    color: white;
-    display: flex;
-    height: 100%;
-    position: relative;
-    justify-content: center;
-    transform-origin: left;
-    width: 100%;
-    @media ( max-width: $width-small ) {
-        width: 80px;
-    }
-}
-.pennant::before {
-    background: $color-border-grey;
-    height: 75px;
-    content: '';
-    left: 0;
-    bottom: -75px;
-    position: absolute;
-    width: 1px;
-    @media ( max-width: $width-small ) {
-        bottom: -50px;
-        height: 50px;
-    }
-}
 .text {
     font-family: "pp_pangaialight", Georgia, serif;
     font-size: 55px;

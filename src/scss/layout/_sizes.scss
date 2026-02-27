@@ -1,24 +1,33 @@
+// Legacy fixed sizes (used by non-portfolio sections)
 .width-xsmall { width: $width-xsmall; }
-.width-small { 
-    width: $width-small; 
-    @media ( max-width: $width-small ) {
+.width-medium  { width: $width-medium; }
+
+// Portfolio viewport-relative sizes
+// Desktop: 1/3 | 2/3 | full
+// Mobile (≤768px): 100vw | 200vw | 300vw (each column becomes full-screen in horizontal scroll)
+.width-third {
+    width: calc( 100vw / 3 );
+
+    @media ( max-width: $width-medium ) {
         width: 100dvw;
     }
     @media ( max-height: 360px ) {
         width: 100dvw;
     }
 }
-.width-medium { width: $width-medium; }
-.width-large { 
-    width: $width-large; 
-    @media ( max-width: $width-small ) {
-        width: 170dvw;
+
+.width-two-thirds {
+    width: calc( 200vw / 3 );
+
+    @media ( max-width: $width-medium ) {
+        width: 200dvw;
     }
 }
-.width-xlarge { 
-    width: $width-xlarge; 
-    @media ( max-width: $width-small ) {
-        width: 170dvw;
+
+.width-full {
+    width: 100vw;
+
+    @media ( max-width: $width-medium ) {
+        width: 300dvw;
     }
 }
-.width-full { width: $width-full; }
