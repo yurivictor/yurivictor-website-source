@@ -3,6 +3,7 @@
     @extend %right-border;
     display: flex;
     font-family: $font-serif;
+    font-style: italic;
     font-size: 32px;
     justify-content: center;
     padding: $space-default 64px;
@@ -10,8 +11,39 @@
     blockquote {
         max-width: 65%;
     }
-    cite a {
-        color: $color-text-grey;
+    cite {
+        display: inline;
+        font-family: $font-serif-italic;
+        font-size: $font-default;
+        margin-top: $space-small;
+
+        a { color: $color-text-grey; }
+    }
+
+    .memorial {
+        cursor: default;
+        font-size: 10px;
+        margin-left: 3px;
+        position: relative;
+
+        &::after {
+            content: 'RIP';
+            font-family: $font-sans-serif;
+            font-size: 10px;
+            font-style: normal;
+            left: 50%;
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            bottom: calc( 100% + 4px );
+            transform: translateX( -50% );
+            transition: opacity 0.2s ease;
+            white-space: nowrap;
+        }
+
+        &:hover::after {
+            opacity: 1;
+        }
     }
     @media ( max-width: $width-small ) {
         font-size: 24px;

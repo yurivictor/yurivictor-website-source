@@ -365,6 +365,14 @@ class App {
         this.scrollVelocity *= this.velocityFriction;
         this.targetScrollLeft += this.scrollVelocity;
 
+        // Clamp to valid scroll range and kill velocity at boundaries
+        const maxScroll = document.documentElement.scrollWidth - window.innerWidth;
+        const clamped = Math.max( 0, Math.min( maxScroll, this.targetScrollLeft ) );
+        if ( clamped !== this.targetScrollLeft ) {
+            this.targetScrollLeft = clamped;
+            this.scrollVelocity = 0;
+        }
+
         // Calculate difference
         const diff = this.targetScrollLeft - window.scrollX;
 
