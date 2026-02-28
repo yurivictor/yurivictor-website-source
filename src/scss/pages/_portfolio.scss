@@ -164,6 +164,12 @@
         }
     }
 
+    @media ( max-width: $width-large ) {
+        .portfolio__content__heading h3 {
+            font-size: 28px;
+        }
+    }
+
     @media ( max-width: $width-medium ) {
         grid-template-columns: 100dvw 100dvw;
         width: 200dvw;
