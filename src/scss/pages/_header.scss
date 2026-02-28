@@ -99,6 +99,25 @@
             }
         }
     }
+    
+    // IPad Vertical
+    @media ( min-width: 600px ) and ( max-width: 900px ) {
+        &__about {
+            h1 {
+                font-size: 64px;
+            }
+            p {
+                font-size: 24px;
+            }
+        }
+        &__photo {
+            img {
+                height: 360px;
+                width: auto;
+            }
+        }
+    }
+
     @media ( max-width: $width-small ) {
         &__about {
             h1 {

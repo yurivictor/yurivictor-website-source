@@ -119,6 +119,7 @@
             display: inline;
             
             font-size: clamp( 48px, 6vw, 120px );
+            font-style: italic;
             line-height: 1;
         }
 
@@ -176,6 +177,16 @@
         .portfolio__content__quote,
         .portfolio__content__body {
             padding: $space-small;
+        }
+    }
+
+    @media ( min-width: 600px ) and ( max-width: 900px ) {
+        grid-template-columns: 50dvw 50dvw;
+        width: 100dvw;
+        .portfolio__content__quote {
+            blockquote {
+                font-size: 64x;
+            }
         }
     }
 }
