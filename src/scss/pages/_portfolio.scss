@@ -164,7 +164,7 @@
         }
     }
 
-    @media ( max-width: $width-large ) {
+    @media ( max-width: $width-xlarge ) {
         .portfolio__content__heading {
             padding-bottom: 0;
             h3 {
@@ -179,7 +179,7 @@
         }
     }
 
-    @media ( max-width: $width-medium ) {
+    @media ( max-width: $width-large ) {
         grid-template-columns: 100dvw 100dvw;
         width: 200dvw;
         .portfolio__content__text {
