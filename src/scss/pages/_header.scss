@@ -60,8 +60,17 @@
         }
     }
 
+    @media ( max-width: $width-xlarge ) {
+        &__about {
+            p {
+                font-size: 18px;
+            }
+        }
+
+    }
+
     @media ( max-width: $width-large ) {
-                width: 200dvw;
+        width: 200dvw;
 
         &__sun,
         &__about {
@@ -86,7 +95,7 @@
         }
         &__about {
             p {
-                font-size: 16px;
+                font-size: 20px;
             }
         }
     }

@@ -165,8 +165,17 @@
     }
 
     @media ( max-width: $width-large ) {
-        .portfolio__content__heading h3 {
-            font-size: 28px;
+        .portfolio__content__heading {
+            padding-bottom: 0;
+            h3 {
+                font-size: 24px;
+            }
+        }
+        .portfolio__content__body {
+            padding-top: 0;
+            p {
+                font-size: 14px;
+            }
         }
     }
 
@@ -188,18 +197,6 @@
         .portfolio__content__quote,
         .portfolio__content__body {
             padding: $space-small;
-        }
-        .portfolio__content__heading {
-            padding-bottom: 0;
-            h3 {
-                font-size: 24px;
-            }
-        }
-        .portfolio__content__body {
-            padding-top: 0;
-            p {
-                font-size: 14px;
-            }
         }
     }
 }
