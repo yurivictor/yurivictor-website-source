@@ -134,21 +134,15 @@
     }
 
     .portfolio__content__heading {
-        padding: $space-default;
-
-        h3 {
-            font-family: $font-serif;
-            font-size: 36px;
-            letter-spacing: 1.4px;
-            line-height: 1.2;
-        }
+        padding-left: $space-default;
     }
 
     .portfolio__content__body {
         column-count: 2;
         column-gap: $space-default;
         overflow-y: auto;
-        padding: $space-default;
+        padding-bottom: $space-default;
+        padding-right: $space-default;
 
         .coverage { margin-top: auto; }
     }

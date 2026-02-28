@@ -200,7 +200,12 @@ p strong {
   object-fit: cover;
   width: 200px;
 }
-@media (max-width: 768px) {
+@media (max-width: 1280px) {
+  .header__about p {
+    font-size: 18px;
+  }
+}
+@media (max-width: 1024px) {
   .header {
     width: 200dvw;
   }
@@ -213,15 +218,15 @@ p strong {
   .header__about h1 {
     font-size: clamp(28px, 7vw, 52px);
   }
-  .header__about p {
-    font-size: 18px;
-  }
   .header__photo {
     margin: 24px 0;
   }
   .header__photo img {
     height: 180px;
     width: 140px;
+  }
+  .header__about p {
+    font-size: 20px;
   }
 }
 @media (max-width: 480px) {
@@ -282,6 +287,14 @@ p strong {
   height: 100%;
   object-fit: cover;
   width: 100%;
+}
+@media (max-width: 1280px) {
+  .portfolio h3 {
+    font-size: 28px;
+  }
+  .portfolio p {
+    font-size: 16px;
+  }
 }
 @media (max-width: 480px) {
   .portfolio h3 {
@@ -367,19 +380,14 @@ p strong {
   grid-template-columns: 1fr 2fr;
 }
 .layout-full .portfolio__content__heading {
-  padding: 48px;
-}
-.layout-full .portfolio__content__heading h3 {
-  font-family: "pp_pangaiaultralight", Georgia, serif;
-  font-size: 36px;
-  letter-spacing: 1.4px;
-  line-height: 1.2;
+  padding-left: 48px;
 }
 .layout-full .portfolio__content__body {
   column-count: 2;
   column-gap: 48px;
   overflow-y: auto;
-  padding: 48px;
+  padding-bottom: 48px;
+  padding-right: 48px;
 }
 .layout-full .portfolio__content__body .coverage {
   margin-top: auto;
@@ -393,7 +401,7 @@ p strong {
   object-fit: cover;
   width: 100%;
 }
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .layout-full {
     grid-template-columns: 100dvw 100dvw;
     width: 200dvw;
@@ -413,18 +421,6 @@ p strong {
   .layout-full .portfolio__content__quote,
   .layout-full .portfolio__content__body {
     padding: 24px;
-  }
-  .layout-full .portfolio__content__heading {
-    padding-bottom: 0;
-  }
-  .layout-full .portfolio__content__heading h3 {
-    font-size: 24px;
-  }
-  .layout-full .portfolio__content__body {
-    padding-top: 0;
-  }
-  .layout-full .portfolio__content__body p {
-    font-size: 14px;
   }
 }
 
