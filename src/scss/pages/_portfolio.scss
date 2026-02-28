@@ -58,6 +58,15 @@
         }
     }
 
+    @media ( max-width: $width-large ) {
+        h3 {
+            font-size: 28px;
+        }
+        p {
+            font-size: 16px;
+        }
+    }
+
     @media ( max-width: $width-small ) {
         h3 {
             font-size: 24px;
