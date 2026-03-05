@@ -603,7 +603,6 @@ p strong {
   font-size: 32px;
   justify-content: center;
   padding: 48px 64px;
-  width: 1280px;
 }
 .quote blockquote {
   max-width: 65%;
@@ -643,7 +642,6 @@ p strong {
 @media (max-width: 480px) {
   .quote {
     font-size: 24px;
-    width: 150dvw;
   }
   .quote blockquote {
     width: 100%;
