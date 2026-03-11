@@ -639,12 +639,13 @@ p strong {
 .quote .memorial:hover::after {
   opacity: 1;
 }
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .quote {
     font-size: 24px;
+    width: 100vw;
   }
   .quote blockquote {
-    width: 100%;
+    max-width: 90%;
   }
 }
 

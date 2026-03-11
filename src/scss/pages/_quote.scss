@@ -44,10 +44,12 @@
             opacity: 1;
         }
     }
-    @media ( max-width: $width-small ) {
+
+    @media ( max-width: $width-medium ) {
         font-size: 24px;
+        width: 100vw;
         blockquote {
-            width: 100%;
+            max-width: 90%;
         }
     }
 }
