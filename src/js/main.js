@@ -128,6 +128,151 @@ class SunOrb {
     }
 }
 
+class MoonOrb {
+    constructor ( containerId ) {
+        this.container = document.getElementById( containerId );
+        if ( !this.container || typeof THREE === 'undefined' ) return;
+
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera( 75, this.container.offsetWidth / this.container.offsetHeight, 0.1, 1000 );
+        this.renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
+        this.renderer.setClearColor( 0x000000, 0 );
+        this.renderer.setSize( this.container.offsetWidth, this.container.offsetHeight );
+        this.container.appendChild( this.renderer.domElement );
+
+        this.createMoon();
+        this.addLighting();
+        this.updateCamera( this.container.offsetWidth, this.container.offsetHeight );
+        this.setupResizeHandler();
+        this.animate();
+    }
+
+    createMoon () {
+        const geometry = new THREE.SphereGeometry( 1, 64, 64 );
+
+        const fragmentShader = `
+            uniform float time;
+            varying vec3 vNormal;
+            varying vec3 vPosition;
+            varying vec2 vUv;
+
+            float hash( vec2 p ) {
+                return fract( sin( dot( p, vec2( 127.1, 311.7 ) ) ) * 43758.5453 );
+            }
+
+            float noise( vec2 p ) {
+                vec2 i = floor( p );
+                vec2 f = fract( p );
+                f = f * f * ( 3.0 - 2.0 * f );
+                return mix(
+                    mix( hash( i ), hash( i + vec2( 1.0, 0.0 ) ), f.x ),
+                    mix( hash( i + vec2( 0.0, 1.0 ) ), hash( i + vec2( 1.0, 1.0 ) ), f.x ),
+                    f.y
+                );
+            }
+
+            float fbm( vec2 p ) {
+                return noise( p ) * 0.5 + noise( p * 2.0 ) * 0.25 + noise( p * 4.0 ) * 0.125;
+            }
+
+            void main() {
+                vec2 center = vec2( 0.5, 0.5 );
+                float dist = length( vUv - center );
+
+                float gradient = smoothstep( 0.5, 0.0, dist );
+
+                float surface = fbm( vUv * 8.0 + time * 0.01 );
+                surface = ( surface - 0.5 ) * 0.2;
+
+                float pulse = 0.01 * sin( time * 0.2 );
+                gradient = gradient + pulse;
+
+                vec3 highlightColor = vec3( 184.0/255.0, 188.0/255.0, 202.0/255.0 );
+                vec3 midColor       = vec3( 138.0/255.0, 144.0/255.0, 158.0/255.0 );
+                vec3 shadowColor    = vec3(  90.0/255.0,  94.0/255.0, 106.0/255.0 );
+
+                vec3 finalColor;
+                if ( gradient > 0.3 ) {
+                    finalColor = mix( midColor, highlightColor, ( gradient - 0.3 ) / 0.7 );
+                } else {
+                    finalColor = mix( shadowColor, midColor, gradient / 0.3 );
+                }
+
+                finalColor += surface;
+
+                float phase = smoothstep( 0.35, 0.65, vUv.x );
+                finalColor *= mix( 0.5, 1.0, phase );
+
+                vec3 viewDirection = normalize( vPosition );
+                float fresnel = abs( dot( viewDirection, vNormal ) );
+                float alpha = smoothstep( 0.0, 0.3, fresnel ) * smoothstep( 0.52, 0.0, dist );
+
+                gl_FragColor = vec4( finalColor, alpha );
+            }
+        `;
+
+        const vertexShader = `
+            uniform float time;
+            varying vec2 vUv;
+            varying vec3 vNormal;
+            varying vec3 vPosition;
+
+            void main() {
+                vUv = uv;
+                vNormal = normalize( normalMatrix * normal );
+                vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+                vPosition = mvPosition.xyz;
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        `;
+
+        const material = new THREE.ShaderMaterial( {
+            uniforms: {
+                time: { value: 0 }
+            },
+            vertexShader,
+            fragmentShader,
+            transparent: true,
+            side: THREE.DoubleSide
+        } );
+
+        this.moon = new THREE.Mesh( geometry, material );
+        this.scene.add( this.moon );
+    }
+
+    addLighting () {
+        this.scene.add( new THREE.AmbientLight( 0x202030 ) );
+        const directionalLight = new THREE.DirectionalLight( 0xaabbcc, 0.4 );
+        directionalLight.position.set( 1, 1, 1 );
+        this.scene.add( directionalLight );
+    }
+
+    updateCamera ( w, h ) {
+        const aspect = w / h;
+        const minZ = 1.15 / ( Math.tan( ( 75 / 2 ) * ( Math.PI / 180 ) ) * aspect );
+        this.camera.position.z = Math.max( 4.5, minZ );
+        this.camera.aspect = aspect;
+        this.camera.updateProjectionMatrix();
+    }
+
+    setupResizeHandler () {
+        window.addEventListener( 'resize', () => {
+            const w = this.container.offsetWidth;
+            const h = this.container.offsetHeight;
+            this.updateCamera( w, h );
+            this.renderer.setSize( w, h );
+        } );
+    }
+
+    animate () {
+        requestAnimationFrame( () => this.animate() );
+        this.moon.rotation.y += 0.002;
+        this.moon.rotation.x += 0.001;
+        this.moon.material.uniforms.time.value = performance.now() * 0.001;
+        this.renderer.render( this.scene, this.camera );
+    }
+}
+
 /**
  * Let's destroy the DOM for no reason except that we can
  * SCROLL SCROLL SCROLL
@@ -549,5 +694,6 @@ class App {
 // Initialize the app
 document.addEventListener( 'DOMContentLoaded', () => {
     new SunOrb( 'header-sun' );
+    new MoonOrb( 'footer-moon' );
     new App();
 } );
