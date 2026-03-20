@@ -232,7 +232,7 @@ class NightSky {
                 nebulaColor += vec3( 0.15, 0.10, 0.03 ) * smoothstep( 0.35, 0.75, nebula );
 
                 // === Stars ===
-                float mwBoost = 1.0 + bandMask * 2.5;
+                float mwBoost = 1.0 + bandMask * 1.6;
 
                 float starBri = 0.0;
                 starBri += starLayer( uv,  12.0, 0.04 * mwBoost, 0.045 );
@@ -243,12 +243,12 @@ class NightSky {
                 vec3 starColor = vec3( 0.85, 0.92, 1.0 ) * starBri;
 
                 // Warm (orange) and cool (blue) colored stars
-                starColor += vec3( 1.0, 0.65, 0.35 ) * starLayer( uv + 5.0, 10.0, 0.04, 0.04 ) * 0.6;
-                starColor += vec3( 0.55, 0.75, 1.0 ) * starLayer( uv - 3.0, 10.0, 0.04, 0.04 ) * 0.6;
+                starColor += vec3( 1.0, 0.65, 0.35 ) * starLayer( uv + 5.0, 10.0, 0.04, 0.04 ) * 0.4;
+                starColor += vec3( 0.55, 0.75, 1.0 ) * starLayer( uv - 3.0, 10.0, 0.04, 0.04 ) * 0.4;
 
                 // === Compose ===
                 vec3 bgColor    = vec3( 0.01, 0.01, 0.04 );
-                vec3 finalColor = bgColor + nebulaColor * 0.7 + starColor;
+                vec3 finalColor = bgColor + nebulaColor * 0.45 + starColor;
 
                 gl_FragColor = vec4( finalColor, 1.0 );
             }
