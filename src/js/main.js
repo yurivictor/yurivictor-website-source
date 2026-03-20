@@ -128,36 +128,42 @@ class SunOrb {
     }
 }
 
-class MoonOrb {
+class NightSky {
     constructor ( containerId ) {
         this.container = document.getElementById( containerId );
         if ( !this.container || typeof THREE === 'undefined' ) return;
 
+        this.mouseX = 0;
+        this.mouseY = 0;
+        this.targetMouseX = 0;
+        this.targetMouseY = 0;
+
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera( 75, this.container.offsetWidth / this.container.offsetHeight, 0.1, 1000 );
-        this.renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
-        this.renderer.setClearColor( 0x000000, 0 );
+        this.camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
+        this.renderer = new THREE.WebGLRenderer( { antialias: false } );
         this.renderer.setSize( this.container.offsetWidth, this.container.offsetHeight );
+        this.renderer.setPixelRatio( Math.min( window.devicePixelRatio, 2 ) );
         this.container.appendChild( this.renderer.domElement );
 
-        this.createMoon();
-        this.addLighting();
-        this.updateCamera( this.container.offsetWidth, this.container.offsetHeight );
+        this.createSky();
         this.setupResizeHandler();
+        this.setupMouseHandler();
         this.animate();
     }
 
-    createMoon () {
-        const geometry = new THREE.SphereGeometry( 1, 64, 64 );
+    createSky () {
+        const geometry = new THREE.PlaneGeometry( 2, 2 );
 
         const fragmentShader = `
             uniform float time;
-            varying vec3 vNormal;
-            varying vec3 vPosition;
+            uniform vec2 resolution;
+            uniform vec2 mouse;
             varying vec2 vUv;
 
-            float hash( vec2 p ) {
-                return fract( sin( dot( p, vec2( 127.1, 311.7 ) ) ) * 43758.5453 );
+            float hash21( vec2 p ) {
+                p = fract( p * vec2( 123.34, 456.21 ) );
+                p += dot( p, p + 45.32 );
+                return fract( p.x * p.y );
             }
 
             float noise( vec2 p ) {
@@ -165,110 +171,138 @@ class MoonOrb {
                 vec2 f = fract( p );
                 f = f * f * ( 3.0 - 2.0 * f );
                 return mix(
-                    mix( hash( i ), hash( i + vec2( 1.0, 0.0 ) ), f.x ),
-                    mix( hash( i + vec2( 0.0, 1.0 ) ), hash( i + vec2( 1.0, 1.0 ) ), f.x ),
+                    mix( hash21( i ),               hash21( i + vec2( 1.0, 0.0 ) ), f.x ),
+                    mix( hash21( i + vec2( 0.0, 1.0 ) ), hash21( i + vec2( 1.0, 1.0 ) ), f.x ),
                     f.y
                 );
             }
 
             float fbm( vec2 p ) {
-                return noise( p ) * 0.5 + noise( p * 2.0 ) * 0.25 + noise( p * 4.0 ) * 0.125;
+                float v = 0.0;
+                float a = 0.5;
+                mat2 m = mat2( 1.6, 1.2, -1.2, 1.6 );
+                for ( int i = 0; i < 5; i++ ) {
+                    v += a * noise( p );
+                    p = m * p;
+                    a *= 0.5;
+                }
+                return v;
+            }
+
+            float starLayer( vec2 uv, float scale, float probability, float size ) {
+                vec2 cell    = floor( uv * scale );
+                vec2 cellPos = fract( uv * scale ) - 0.5;
+                float rnd = hash21( cell );
+                if ( rnd > probability ) return 0.0;
+                vec2 offset    = vec2( hash21( cell + 0.3 ) - 0.5, hash21( cell + 0.7 ) - 0.5 ) * 0.6;
+                float dist     = length( cellPos - offset );
+                float bri      = 0.5 + 0.5 * hash21( cell + 1.5 );
+                float twinkle  = 0.75 + 0.25 * sin( time * ( 0.5 + bri * 2.0 ) + rnd * 6.28318 );
+                return smoothstep( size, 0.0, dist ) * bri * twinkle;
             }
 
             void main() {
-                vec2 center = vec2( 0.5, 0.5 );
-                float dist = length( vUv - center );
+                float aspect = resolution.x / resolution.y;
+                vec2 uv = ( vUv - 0.5 ) * vec2( aspect, 1.0 );
 
-                float gradient = smoothstep( 0.5, 0.0, dist );
+                // Slow sky rotation
+                float angle = time * 0.015;
+                float c = cos( angle );
+                float s = sin( angle );
+                uv = vec2( c * uv.x - s * uv.y, s * uv.x + c * uv.y );
 
-                float surface = fbm( vUv * 8.0 + time * 0.01 );
-                surface = ( surface - 0.5 ) * 0.2;
+                // Mouse parallax
+                uv += mouse * 0.04;
 
-                float pulse = 0.01 * sin( time * 0.2 );
-                gradient = gradient + pulse;
+                // === Milky Way ===
+                float bandAngle = 1.1;
+                float bandDist  = abs( uv.x * sin( bandAngle ) - uv.y * cos( bandAngle ) );
+                float bandMask  = exp( -bandDist * bandDist * 3.5 );
 
-                vec3 highlightColor = vec3( 184.0/255.0, 188.0/255.0, 202.0/255.0 );
-                vec3 midColor       = vec3( 138.0/255.0, 144.0/255.0, 158.0/255.0 );
-                vec3 shadowColor    = vec3(  90.0/255.0,  94.0/255.0, 106.0/255.0 );
+                float nebula  = fbm( uv * 1.8 + vec2(  0.5,  0.3 ) ) * bandMask;
+                float nebula2 = fbm( uv * 3.5 + vec2( -0.2,  0.8 ) ) * bandMask * 0.6;
+                float nebulaTotal = nebula + nebula2;
 
-                vec3 finalColor;
-                if ( gradient > 0.3 ) {
-                    finalColor = mix( midColor, highlightColor, ( gradient - 0.3 ) / 0.7 );
-                } else {
-                    finalColor = mix( shadowColor, midColor, gradient / 0.3 );
-                }
+                vec3 nebulaColor = mix(
+                    vec3( 0.0,  0.02, 0.10 ),
+                    vec3( 0.2,  0.25, 0.55 ),
+                    clamp( nebulaTotal * 1.2, 0.0, 1.0 )
+                );
+                // Warm galactic core tint
+                nebulaColor += vec3( 0.15, 0.10, 0.03 ) * smoothstep( 0.35, 0.75, nebula );
 
-                finalColor += surface;
+                // === Stars ===
+                float mwBoost = 1.0 + bandMask * 2.5;
 
-                float phase = smoothstep( 0.35, 0.65, vUv.x );
-                finalColor *= mix( 0.5, 1.0, phase );
+                float starBri = 0.0;
+                starBri += starLayer( uv,  12.0, 0.04 * mwBoost, 0.045 );
+                starBri += starLayer( uv,  25.0, 0.07 * mwBoost, 0.028 ) * 0.75;
+                starBri += starLayer( uv,  55.0, 0.10 * mwBoost, 0.016 ) * 0.45;
+                starBri += starLayer( uv, 110.0, 0.14 * mwBoost, 0.009 ) * 0.25;
 
-                vec3 viewDirection = normalize( vPosition );
-                float fresnel = abs( dot( viewDirection, vNormal ) );
-                float alpha = smoothstep( 0.0, 0.3, fresnel ) * smoothstep( 0.52, 0.0, dist );
+                vec3 starColor = vec3( 0.85, 0.92, 1.0 ) * starBri;
 
-                gl_FragColor = vec4( finalColor, alpha );
+                // Warm (orange) and cool (blue) colored stars
+                starColor += vec3( 1.0, 0.65, 0.35 ) * starLayer( uv + 5.0, 10.0, 0.04, 0.04 ) * 0.6;
+                starColor += vec3( 0.55, 0.75, 1.0 ) * starLayer( uv - 3.0, 10.0, 0.04, 0.04 ) * 0.6;
+
+                // === Compose ===
+                vec3 bgColor    = vec3( 0.01, 0.01, 0.04 );
+                vec3 finalColor = bgColor + nebulaColor * 0.7 + starColor;
+
+                gl_FragColor = vec4( finalColor, 1.0 );
             }
         `;
 
         const vertexShader = `
-            uniform float time;
             varying vec2 vUv;
-            varying vec3 vNormal;
-            varying vec3 vPosition;
-
             void main() {
                 vUv = uv;
-                vNormal = normalize( normalMatrix * normal );
-                vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-                vPosition = mvPosition.xyz;
-                gl_Position = projectionMatrix * mvPosition;
+                gl_Position = vec4( position.xy, 0.0, 1.0 );
             }
         `;
 
-        const material = new THREE.ShaderMaterial( {
+        this.material = new THREE.ShaderMaterial( {
             uniforms: {
-                time: { value: 0 }
+                time:       { value: 0 },
+                resolution: { value: new THREE.Vector2( this.container.offsetWidth, this.container.offsetHeight ) },
+                mouse:      { value: new THREE.Vector2( 0, 0 ) }
             },
             vertexShader,
-            fragmentShader,
-            transparent: true,
-            side: THREE.DoubleSide
+            fragmentShader
         } );
 
-        this.moon = new THREE.Mesh( geometry, material );
-        this.scene.add( this.moon );
+        this.plane = new THREE.Mesh( geometry, this.material );
+        this.scene.add( this.plane );
     }
 
-    addLighting () {
-        this.scene.add( new THREE.AmbientLight( 0x202030 ) );
-        const directionalLight = new THREE.DirectionalLight( 0xaabbcc, 0.4 );
-        directionalLight.position.set( 1, 1, 1 );
-        this.scene.add( directionalLight );
-    }
-
-    updateCamera ( w, h ) {
-        const aspect = w / h;
-        const minZ = 1.15 / ( Math.tan( ( 75 / 2 ) * ( Math.PI / 180 ) ) * aspect );
-        this.camera.position.z = Math.max( 4.5, minZ );
-        this.camera.aspect = aspect;
-        this.camera.updateProjectionMatrix();
+    setupMouseHandler () {
+        this.container.addEventListener( 'mousemove', ( e ) => {
+            const rect = this.container.getBoundingClientRect();
+            this.targetMouseX =  ( ( e.clientX - rect.left ) / rect.width  ) * 2.0 - 1.0;
+            this.targetMouseY = -( ( ( e.clientY - rect.top  ) / rect.height ) * 2.0 - 1.0 );
+        } );
+        this.container.addEventListener( 'mouseleave', () => {
+            this.targetMouseX = 0;
+            this.targetMouseY = 0;
+        } );
     }
 
     setupResizeHandler () {
         window.addEventListener( 'resize', () => {
             const w = this.container.offsetWidth;
             const h = this.container.offsetHeight;
-            this.updateCamera( w, h );
             this.renderer.setSize( w, h );
+            this.material.uniforms.resolution.value.set( w, h );
         } );
     }
 
     animate () {
         requestAnimationFrame( () => this.animate() );
-        this.moon.rotation.y += 0.002;
-        this.moon.rotation.x += 0.001;
-        this.moon.material.uniforms.time.value = performance.now() * 0.001;
+        this.mouseX += ( this.targetMouseX - this.mouseX ) * 0.05;
+        this.mouseY += ( this.targetMouseY - this.mouseY ) * 0.05;
+        this.material.uniforms.time.value  = performance.now() * 0.001;
+        this.material.uniforms.mouse.value.set( this.mouseX, this.mouseY );
         this.renderer.render( this.scene, this.camera );
     }
 }
@@ -694,6 +728,6 @@ class App {
 // Initialize the app
 document.addEventListener( 'DOMContentLoaded', () => {
     new SunOrb( 'header-sun' );
-    new MoonOrb( 'footer-moon' );
+    new NightSky( 'footer-moon' );
     new App();
 } );
