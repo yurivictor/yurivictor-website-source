@@ -177,6 +177,7 @@ p strong {
   flex-direction: column;
   justify-content: center;
   overflow-y: auto;
+  text-wrap: pretty;
 }
 .header__about h1 {
   font-family: "pp_pangaiaultralight", Georgia, serif;
@@ -721,20 +722,35 @@ p strong {
 }
 
 .footer {
-  background-color: #575b3e;
-  border-top: 1px solid white;
-  border-bottom: 1px solid white;
+  background-color: #1a1a1a;
   display: flex;
-  height: 100%;
-  padding: 48px;
+  position: relative;
+  width: 100vw;
 }
-.footer p {
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  writing-mode: vertical-rl;
+.footer__moon {
+  inset: 0;
+  overflow: hidden;
+  position: absolute;
+}
+.footer__moon canvas {
+  display: block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.footer__text {
+  bottom: 48px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  text-align: center;
 }
 .footer a {
   color: white;
+  font-family: "pp_neue_montrealregular", Helvetica, sans-serif;
+  font-size: 18px;
 }
 
 /******************************************************

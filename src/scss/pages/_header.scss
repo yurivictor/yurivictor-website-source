@@ -27,7 +27,7 @@
         flex-direction: column;
         justify-content: center;
         overflow-y: auto;
-        
+        text-wrap: pretty;
 
         h1 {
             font-family: $font-serif;
