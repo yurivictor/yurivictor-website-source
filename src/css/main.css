@@ -182,6 +182,8 @@ p strong {
 .header__about h1 {
   font-family: "pp_pangaiaultralight", Georgia, serif;
   font-size: clamp(18px, 3.8vw, 72px);
+  font-feature-settings: "dlig" 1, "liga" 1;
+  font-variant-ligatures: discretionary-ligatures;
   font-weight: 400;
   letter-spacing: 2px;
   line-height: 1.2;
@@ -243,7 +245,7 @@ p strong {
     margin: 24px 0;
   }
   .header__photo img {
-    height: 180px;
+    height: 140px;
     width: 140px;
   }
   .header__about p {
@@ -263,8 +265,12 @@ p strong {
   }
 }
 @media (max-width: 480px) {
+  .header__about {
+    padding: 16px;
+  }
   .header__about h1 {
     font-size: clamp(24px, 8vw, 40px);
+    padding: 16px 0;
   }
   .header__about p {
     font-size: 16px;

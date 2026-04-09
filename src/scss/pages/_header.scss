@@ -32,6 +32,8 @@
         h1 {
             font-family: $font-serif;
             font-size: clamp( 18px, 3.8vw, 72px );
+            font-feature-settings: "dlig" 1, "liga" 1;
+            font-variant-ligatures: discretionary-ligatures;
             font-weight: 400;
             letter-spacing: 2px;
             line-height: 1.2;
@@ -107,7 +109,7 @@
             margin: $space-small 0;
 
             img {
-                height: 180px;
+                height: 140px;
                 width: 140px;
             }
         }
@@ -138,8 +140,11 @@
 
     @media ( max-width: $width-small ) {
         &__about {
+            padding: 16px;
+
             h1 {
                 font-size: clamp( 24px, 8vw, 40px );
+                padding: 16px 0;
             }
 
             p {
