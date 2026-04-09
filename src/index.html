@@ -27,17 +27,26 @@
 <body>
     <div id="container" class="container">
         <header id="home" class="header">
-            <div class="header__sun" id="header-sun"></div>
+            <div class="header__sun" id="header-sun">
+                <nav class="header__nav">
+                    <a href="#vox">Vox.com</a>
+                    <a href="#nyt">NYTimes</a>
+                    <a href="#usat">USA Today</a>
+                    <a href="#verge">The Verge</a>
+                    <a href="#nytmag">NYT Magazine</a>
+                    <a href="#onion">The Onion</a>
+                    <a href="#elsewhere">Elsewhere</a>
+                </nav>
+            </div>
+            <div class="header__photo">
+                <picture>
+                    <source type="image/webp" srcset="images/yuri_victor_trees.webp">
+                    <source type="image/jpeg" srcset="images/yuri_victor_trees.jpg">
+                    <img src="images/yuri_victor_trees.jpg" alt="Yuri Victor">
+                </picture>
+            </div>
             <div class="header__about">
-                <h1>Yuri Victor <em>is</em><br>Making Things</h1>
-                <div class="header__photo">
-                    <picture>
-                        <source type="image/webp" srcset="images/yuri_victor_trees.webp">
-                        <source type="image/jpeg" srcset="images/yuri_victor_trees.jpg">
-                        <img src="images/yuri_victor_trees.jpg" alt="Yuri Victor">
-                    </picture>
-                </div>
-                <p>Creative technologist with 20 years experience innovating huge digital products and systems. Previously, co-founded Vox.com, launched the largest CMS in publishing, and spent eight years developing AI tools for storytellers. In my free time, I'm usually walking my dog, Song, around Brooklyn, sharing chisme, or cooking pintxos.</p>
+                <h1><strong>Making insanely great things</strong> at Apple. Creative technologist with 20 years experience innovating huge digital products and systems. Previously, co-founded Vox.com, launched the largest CMS in publishing, and spent eight years building AI tools to empower storytellers. In my free time, I'm usually walking my dog around Brooklyn, sharing chisme, or cooking pintxos.</h1>
             </div>
         </header>
         <!-- <section id="apple" class="portfolio apple">
@@ -193,7 +202,7 @@
                 <cite><a href="https://x.com/AllisonRockey/status/517437406543638528">&mdash; Allison Rockey</a><sup class="memorial" aria-label="Rest in peace">♥</sup></cite>
             </blockquote>
         </section>
-        <section class="elsewhere width-third">
+        <section id="elsewhere" class="elsewhere width-third">
             <h2>Elsewhere</h2>
 
             <p><a class="text-serif" href="https://rd.nytimes.com/projects/working-with-universities-to-experiment-with-spatial-computing/">Experimenting with universities in AR</a></p>

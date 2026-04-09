@@ -335,12 +335,15 @@ class App {
         this.hasScrolled = false; // Track if user scrolled vs tapped
         this.bindEvents();
         this.setHeight();
+        this.fitHeaderText();
+        this.bouncePhoto();
         this.logStuff();
         // this.createScrollSettings();
         // this.logSize();
         // this.fetchLocalData();
     }
     bindEvents () {
+        window.addEventListener( 'resize', this.fitHeaderText.bind( this ) );
         document.addEventListener( 'touchstart', this.handleTouchScrollStart.bind( this ), { passive: true } );
         if ( this.isTouchDevice ) {
             // Touch devices: tap-only scrolling
@@ -352,6 +355,61 @@ class App {
         }
         document.addEventListener( 'keydown', this.handleKeyScroll.bind( this ) );
         window.addEventListener( 'wheel', this.handleWheelScroll.bind( this ), { passive: false } );
+    }
+    bouncePhoto () {
+        const container = document.querySelector( '.header' );
+        const photo = document.querySelector( '.header__photo' );
+        if ( !container || !photo ) return;
+
+        let x = Math.random() * ( container.offsetWidth - photo.offsetWidth );
+        let y = Math.random() * ( container.offsetHeight - photo.offsetHeight );
+        let dx = 1.2;
+        let dy = 0.9;
+        let angle = 0;
+
+        const animate = () => {
+            const cw = container.offsetWidth;
+            const ch = container.offsetHeight;
+            const pw = photo.offsetWidth;
+            const ph = photo.offsetHeight;
+
+            x += dx;
+            y += dy;
+
+            if ( x <= 0 ) { x = 0; dx = Math.abs( dx ); }
+            if ( x + pw >= cw ) { x = cw - pw; dx = -Math.abs( dx ); }
+            if ( y <= 0 ) { y = 0; dy = Math.abs( dy ); }
+            if ( y + ph >= ch ) { y = ch - ph; dy = -Math.abs( dy ); }
+
+            angle += 0.5;
+            photo.style.transform = `rotate(${ angle }deg)`;
+            photo.style.left = x + 'px';
+            photo.style.top = y + 'px';
+
+            requestAnimationFrame( animate );
+        };
+
+        animate();
+    }
+    fitHeaderText () {
+        const about = document.querySelector( '.header__about' );
+        const h1 = about && about.querySelector( 'h1' );
+        if ( !about || !h1 ) return;
+
+        const available = about.clientHeight;
+        let lo = 10, hi = 300;
+        h1.style.fontSize = '';
+
+        while ( lo < hi - 1 ) {
+            const mid = Math.floor( ( lo + hi ) / 2 );
+            h1.style.fontSize = mid + 'px';
+            if ( h1.scrollHeight <= available ) {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+        h1.style.fontSize = lo + 'px';
     }
     setHeight () {
         if ( window.matchMedia( '(pointer: coarse)' ).matches) {

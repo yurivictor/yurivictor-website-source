@@ -1,6 +1,7 @@
 .header {
     @extend %right-border;
     display: flex;
+    position: relative;
     width: 100vw;
 
     &__sun {
@@ -26,17 +27,16 @@
         flex-direction: column;
         justify-content: center;
         overflow-y: auto;
-        padding: $space-default * 1.5;
-        text-align: center;
+        
 
         h1 {
             font-family: $font-serif;
-            font-size: clamp( 32px, 3.8vw, 72px );
+            font-size: clamp( 18px, 3.8vw, 72px );
             font-weight: 400;
             letter-spacing: 2px;
-            line-height: 1.1;
-            padding: 0;
-            text-transform: uppercase;
+            line-height: 1.2;
+            padding: 16px $space-default;
+            text-align: left;
             em {
                 text-transform: none;
             }
@@ -49,14 +49,32 @@
         }
     }
 
+    &__nav {
+        bottom: 16px;
+        left: 16px;
+        position: absolute;
+        z-index: 1;
+
+        a {
+            color: $color-default;
+            display: block;
+            font-family: $font-sans-serif;
+            font-size: $font-small;
+            line-height: 1.8;
+        }
+    }
+
     &__photo {
-        margin: $space-default 0;
+        border-radius: 50%;
+        overflow: hidden;
+        position: absolute;
+        z-index: 2;
 
         img {
             display: block;
-            height: 260px;
+            height: 140px;
             object-fit: cover;
-            width: 200px;
+            width: 140px;
         }
     }
 
