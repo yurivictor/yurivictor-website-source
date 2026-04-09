@@ -355,6 +355,23 @@ class App {
         }
         document.addEventListener( 'keydown', this.handleKeyScroll.bind( this ) );
         window.addEventListener( 'wheel', this.handleWheelScroll.bind( this ), { passive: false } );
+        this.bindAnchorLinks();
+    }
+    bindAnchorLinks () {
+        document.querySelectorAll( 'a[href^="#"]' ).forEach( link => {
+            link.addEventListener( 'click', ( e ) => {
+                const id = link.getAttribute( 'href' ).slice( 1 );
+                const target = document.getElementById( id );
+                if ( !target ) return;
+                e.preventDefault();
+                // Cancel any in-flight scroll animation
+                this.isScrolling = false;
+                this.scrollVelocity = 0;
+                const left = target.getBoundingClientRect().left + window.scrollX;
+                this.targetScrollLeft = left;
+                window.scrollTo( { left, behavior: 'smooth' } );
+            } );
+        } );
     }
     bouncePhoto () {
         const container = document.querySelector( '.header' );
