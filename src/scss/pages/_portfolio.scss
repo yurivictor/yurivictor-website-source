@@ -189,6 +189,12 @@
             }
         }
     }
+
+    @media ( max-width: $width-small ) {
+        .portfolio__content__heading {
+            padding-bottom: 0;
+        }
+    }
 }
 
 .layout-stacked {

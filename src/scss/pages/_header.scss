@@ -140,7 +140,7 @@
 
     @media ( max-width: $width-small ) {
         &__about {
-            padding: 16px;
+            padding: 16px $space-small;
 
             h1 {
                 font-size: clamp( 24px, 8vw, 40px );

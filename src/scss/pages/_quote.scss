@@ -52,4 +52,8 @@
             max-width: 90%;
         }
     }
+
+    @media ( max-width: $width-small ) {
+        padding: $space-default $space-small;
+    }
 }
