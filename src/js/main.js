@@ -413,7 +413,10 @@ class App {
         const h1 = about && about.querySelector( 'h1' );
         if ( !about || !h1 ) return;
 
-        const available = about.clientHeight;
+        const style = getComputedStyle( about );
+        const paddingTop = parseFloat( style.paddingTop ) || 0;
+        const paddingBottom = parseFloat( style.paddingBottom ) || 0;
+        const available = about.clientHeight - paddingTop - paddingBottom;
         let lo = 10, hi = 300;
         h1.style.fontSize = '';
 

@@ -177,6 +177,7 @@ p strong {
   flex-direction: column;
   justify-content: center;
   overflow-y: auto;
+  padding-block: 48px;
   text-wrap: pretty;
 }
 .header__about h1 {
@@ -236,7 +237,7 @@ p strong {
     flex: 0 0 50%;
   }
   .header__about {
-    padding: 48px;
+    padding: 24px;
   }
   .header__about h1 {
     font-size: clamp(28px, 7vw, 52px);
@@ -266,7 +267,7 @@ p strong {
 }
 @media (max-width: 480px) {
   .header__about {
-    padding: 16px;
+    padding: 24px;
   }
   .header__about h1 {
     font-size: clamp(24px, 8vw, 40px);
@@ -472,6 +473,11 @@ p strong {
     font-size: 64x;
   }
 }
+@media (max-width: 480px) {
+  .layout-full .portfolio__content__heading {
+    padding-bottom: 0;
+  }
+}
 
 .layout-stacked {
   flex-direction: column;
@@ -668,6 +674,11 @@ p strong {
   }
   .quote blockquote {
     max-width: 90%;
+  }
+}
+@media (max-width: 480px) {
+  .quote {
+    padding: 48px 24px;
   }
 }
 
