@@ -132,6 +132,7 @@
     .portfolio__content__text__copy {
         display: grid;
         grid-template-columns: 1fr 2fr;
+        column-gap: $space-default;
     }
 
     .portfolio__content__heading {
@@ -159,6 +160,26 @@
         }
     }
 
+    @media ( max-width: 1200px ) {
+        .portfolio__content__text__copy {
+            display: block;
+        }
+        .portfolio__content__body {
+            column-count: 1;
+        }
+        .portfolio__content__heading {
+            padding: $space-small;
+            padding-bottom: 0;
+        }
+        .portfolio__content__quote {
+            padding: $space-small;
+        }
+        .portfolio__content__body {
+            padding: $space-small;
+            padding-top: 0;
+        }
+    }
+
     @media ( max-width: $width-large ) {
         grid-template-columns: 100dvw 100dvw;
         width: 200dvw;
@@ -166,17 +187,6 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-        }
-        .portfolio__content__text__copy {
-            display: block;
-        }
-        .portfolio__content__body {
-            column-count: 1;
-        }
-        .portfolio__content__heading,
-        .portfolio__content__quote,
-        .portfolio__content__body {
-            padding: $space-small;
         }
     }
 
