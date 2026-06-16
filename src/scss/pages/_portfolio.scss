@@ -317,6 +317,7 @@
     }
 
     .portfolio__content__media {
+        flex: 2;
         position: relative;
 
         &::after {
@@ -327,7 +328,7 @@
             opacity: 0.82;
             position: absolute;
             right: 0;
-            top: 0;
+            top: 120px;
         }
 
         img {
@@ -340,16 +341,77 @@
     .portfolio__content__access {
         align-items: center;
         display: flex;
+        flex: 1;
         flex-direction: column;
         gap: $space-small;
-        inset: 0;
         justify-content: center;
-        position: absolute;
-        a {
+    }
+
+    .access-form {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: min( 280px, 80% );
+
+        label {
             color: $color-default;
             font-size: $font-small;
             font-weight: 700;
             text-transform: uppercase;
+        }
+
+        &__field {
+            display: flex;
+            width: 100%;
+        }
+
+        input {
+            background: #fff;
+            border: 1px solid $color-border-grey;
+            border-radius: 4px 0 0 4px;
+            border-right: 0;
+            color: $color-default;
+            flex: 1;
+            font-family: $font-sans-serif;
+            font-size: $font-small;
+            min-width: 0;
+            padding: 10px 12px;
+
+            &:focus {
+                outline: 0;
+                border-color: $color-default;
+            }
+        }
+
+        button {
+            background: $color-default;
+            border: 1px solid $color-default;
+            border-radius: 0 4px 4px 0;
+            color: #fff;
+            cursor: pointer;
+            font-size: $font-small;
+            padding: 10px 14px;
+        }
+
+        &__error {
+            color: #c0392b;
+            font-size: $font-small;
+            margin: 0;
+            min-height: 1.2em;
+            text-align: center;
+            visibility: hidden;
+        }
+
+        &.is-error {
+            input {
+                border-color: #c0392b;
+                color: #c0392b;
+            }
+
+            .access-form__error {
+                visibility: visible;
+            }
         }
     }
 

@@ -27,7 +27,7 @@
         flex-direction: column;
         justify-content: center;
         overflow-y: auto;
-        padding-block: $space-default;
+        padding: $space-default;
         text-wrap: pretty;
 
         h1 {
@@ -38,7 +38,7 @@
             font-weight: 400;
             letter-spacing: 2px;
             line-height: 1.2;
-            padding: 16px $space-default;
+            padding: 0;
             text-align: left;
             em {
                 text-transform: none;
@@ -145,7 +145,7 @@
 
             h1 {
                 font-size: clamp( 24px, 8vw, 40px );
-                padding: 16px 0;
+                padding: 0;
             }
 
             p {

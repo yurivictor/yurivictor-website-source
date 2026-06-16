@@ -177,7 +177,7 @@ p strong {
   flex-direction: column;
   justify-content: center;
   overflow-y: auto;
-  padding-block: 48px;
+  padding: 48px;
   text-wrap: pretty;
 }
 .header__about h1 {
@@ -188,7 +188,7 @@ p strong {
   font-weight: 400;
   letter-spacing: 2px;
   line-height: 1.2;
-  padding: 16px 48px;
+  padding: 0;
   text-align: left;
 }
 .header__about h1 em {
@@ -271,7 +271,7 @@ p strong {
   }
   .header__about h1 {
     font-size: clamp(24px, 8vw, 40px);
-    padding: 16px 0;
+    padding: 0;
   }
   .header__about p {
     font-size: 16px;
@@ -588,6 +588,7 @@ p strong {
   position: relative;
 }
 .apple .portfolio__content__media {
+  flex: 2;
   position: relative;
 }
 .apple .portfolio__content__media::after {
@@ -598,7 +599,7 @@ p strong {
   opacity: 0.82;
   position: absolute;
   right: 0;
-  top: 0;
+  top: 120px;
 }
 .apple .portfolio__content__media img {
   height: auto;
@@ -608,17 +609,67 @@ p strong {
 .apple .portfolio__content__access {
   align-items: center;
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 24px;
-  inset: 0;
   justify-content: center;
-  position: absolute;
 }
-.apple .portfolio__content__access a {
+.apple .access-form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(280px, 80%);
+}
+.apple .access-form label {
   color: #2a2a2a;
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
+}
+.apple .access-form__field {
+  display: flex;
+  width: 100%;
+}
+.apple .access-form input {
+  background: #fff;
+  border: 1px solid #E6E1DA;
+  border-radius: 4px 0 0 4px;
+  border-right: 0;
+  color: #2a2a2a;
+  flex: 1;
+  font-family: "pp_neue_montrealregular", Helvetica, sans-serif;
+  font-size: 14px;
+  min-width: 0;
+  padding: 10px 12px;
+}
+.apple .access-form input:focus {
+  outline: 0;
+  border-color: #2a2a2a;
+}
+.apple .access-form button {
+  background: #2a2a2a;
+  border: 1px solid #2a2a2a;
+  border-radius: 0 4px 4px 0;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 10px 14px;
+}
+.apple .access-form__error {
+  color: #c0392b;
+  font-size: 14px;
+  margin: 0;
+  min-height: 1.2em;
+  text-align: center;
+  visibility: hidden;
+}
+.apple .access-form.is-error input {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+.apple .access-form.is-error .access-form__error {
+  visibility: visible;
 }
 .apple .portfolio__role h2 span:first-child {
   -webkit-background-clip: text, padding-box;

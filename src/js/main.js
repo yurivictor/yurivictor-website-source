@@ -337,6 +337,7 @@ class App {
         this.setHeight();
         this.fitHeaderText();
         this.bouncePhoto();
+        this.bindAccessForm();
         this.logStuff();
         // this.createScrollSettings();
         // this.logSize();
@@ -372,6 +373,26 @@ class App {
                 window.scrollTo( { left, behavior: 'smooth' } );
             } );
         } );
+    }
+    bindAccessForm () {
+        const form = document.querySelector( '.access-form' );
+        if ( !form ) return;
+
+        const input = form.querySelector( 'input[type="password"]' );
+
+        form.addEventListener( 'submit', ( e ) => {
+            e.preventDefault();
+            // No password is correct yet — always reject for now.
+            form.classList.add( 'is-error' );
+            if ( input ) input.focus();
+        } );
+
+        if ( input ) {
+            // Clear the error state once the visitor edits the password again.
+            input.addEventListener( 'input', () => {
+                form.classList.remove( 'is-error' );
+            } );
+        }
     }
     bouncePhoto () {
         const container = document.querySelector( '.header' );
