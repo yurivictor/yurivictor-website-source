@@ -634,8 +634,7 @@ p strong {
 .apple .access-form input {
   background: #fff;
   border: 1px solid #E6E1DA;
-  border-radius: 4px 0 0 4px;
-  border-right: 0;
+  border-radius: 4px;
   color: #2a2a2a;
   flex: 1;
   font-family: "pp_neue_montrealregular", Helvetica, sans-serif;
