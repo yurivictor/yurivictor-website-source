@@ -335,7 +335,14 @@ class App {
         this.hasScrolled = false; // Track if user scrolled vs tapped
         this.bindEvents();
         this.setHeight();
-        this.fitHeaderText();
+        // Wait for custom web fonts before measuring, otherwise the binary
+        // search runs against fallback-font metrics and lands on a different
+        // size each load (FOUT race).
+        if ( document.fonts && document.fonts.ready ) {
+            document.fonts.ready.then( () => this.fitHeaderText() );
+        } else {
+            this.fitHeaderText();
+        }
         this.bouncePhoto();
         this.bindAccessForm();
         this.logStuff();

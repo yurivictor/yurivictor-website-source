@@ -4,11 +4,12 @@
     display: flex;
     font-family: $font-serif;
     font-style: italic;
-    font-size: 32px;
+    font-size: clamp( 32px, 2.6vw, 52px );
     justify-content: center;
     padding: $space-default 64px;
     blockquote {
         max-width: 65%;
+        text-wrap: balance;
     }
     cite {
         display: inline;

@@ -599,7 +599,7 @@ p strong {
   opacity: 0.82;
   position: absolute;
   right: 0;
-  top: 120px;
+  top: 0;
 }
 .apple .portfolio__content__media img {
   height: auto;
@@ -687,12 +687,13 @@ p strong {
   display: flex;
   font-family: "pp_pangaiaultralight", Georgia, serif;
   font-style: italic;
-  font-size: 32px;
+  font-size: clamp(32px, 2.6vw, 52px);
   justify-content: center;
   padding: 48px 64px;
 }
 .quote blockquote {
   max-width: 65%;
+  text-wrap: balance;
 }
 .quote cite {
   display: inline;
