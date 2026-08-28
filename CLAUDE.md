@@ -2,6 +2,11 @@
 
 Personal homepage. Horizontal-scrolling single-page layout.
 
+In-progress work: migrating to Vite so the Apple section can use a React-based
+3D lanyard component. Details live in `ROADMAP.md`, which is gitignored — it
+exists only in the maintainer's working copy, so it will be absent from a fresh
+clone.
+
 ## Build & Dev
 
 ```bash
@@ -9,12 +14,43 @@ npm start          # watch SCSS + live-server (src/)
 npm run build      # full production build → dist/
 ```
 
-Build pipeline order: `build:scss` → `build:autoprefixer` → `build:css-lint` → `build:css-minify` → `build:js-minify` → `build:copy-assets` → `build:copy-html`
+Build pipeline order: `build:scss` → `build:autoprefixer` → `build:css-lint` → `build:css-minify` → `build:js` → `build:copy-assets` → `build:copy-html`
 
 - SCSS compiled with `sass`
 - CSS post-processed with `autoprefixer` then minified via `cssnano` + `css-minify`
-- JS minified with `uglify-js`
+- JS bundled and minified with Vite (`vite.config.mjs`)
 - Assets (fonts) copied from `src/assets/` to `dist/assets/`
+
+### Deploy
+
+`.github/workflows/deploy.yml` runs `npm ci && npm run build` on push to `main`
+and publishes `./dist` to the `yurivictor/yurivictor.github.io` repo. Build
+changes need no CI changes as long as `npm run build` still emits `dist/`.
+
+### dist/ is committed, and partly hand-maintained
+
+`dist/` is checked into git. Two things in it are **not** produced by any build
+step and exist only because the build never cleans the directory:
+
+- `dist/CNAME` — the custom domain
+- `dist/images/` — every image on the site
+
+Never empty `dist/`. This is why `vite.config.mjs` sets `emptyOutDir: false`,
+and why new images must be copied into `dist/images/` by hand.
+
+### Vite scope (as of step 1)
+
+Vite currently bundles **JS only** — `src/js/main.js` → `dist/js/main.js` as an
+IIFE. It does not touch `index.html` or the SCSS pipeline. Two reasons that
+matters:
+
+- `main.js` is a classic script with no `import`/`export`; it reads `THREE` off
+  the global set by the CDN `<script>` in `index.html`. The IIFE format
+  preserves that.
+- Fonts are referenced from SCSS as absolute paths (`url('/assets/...')`),
+  which Vite would try to resolve at build time if it owned the CSS.
+
+The config is `.mjs` because `package.json` has no `"type": "module"`.
 
 ## Project Structure
 
@@ -41,7 +77,9 @@ src/
       _about.scss
       _elsewhere.scss
       _footer.scss
-dist/              # production output (generated)
+dist/              # production output — committed; see caveat above
+vite.config.mjs
+ROADMAP.md
 ```
 
 ## Fonts
