@@ -1,0 +1,32 @@
+/**
+ * Ported from the upstream Lanyard.css. The component's own CSS import was
+ * removed so all styling stays in this SCSS pipeline — Vite doesn't process
+ * index.html here, so an imported stylesheet would be emitted with nothing
+ * linking to it.
+ */
+
+.lanyard {
+    height: 100%;
+    width: 100%;
+    // Keep native panning from fighting the drag. The page's own horizontal
+    // scrolling is JS-driven, so nothing here depends on native touch scroll.
+    touch-action: none;
+
+    .lanyard-wrapper {
+        align-items: center;
+        display: flex;
+        // Upstream sets 100vh, which overflows the portfolio media slot.
+        height: 100%;
+        justify-content: center;
+        position: relative;
+        transform-origin: center;
+        width: 100%;
+        z-index: 0;
+    }
+}
+
+// The lanyard hangs from the top of the section, so its slot shouldn't reserve
+// the bottom padding that image-based stacked sections use.
+.apple .portfolio__content__media {
+    padding-bottom: 0;
+}

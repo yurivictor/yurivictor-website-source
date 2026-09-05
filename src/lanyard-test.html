@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lanyard tuning harness</title>
+    <!--
+        Dev only. Not copied to dist/ — build:copy-html only copies index.html.
+
+        Deliberately does NOT load js/main.js, so the component runs without the
+        page's horizontal-scroll handlers or portfolio layout. If the lanyard is
+        interactive here but not on the real page, the problem is integration;
+        if it's dead here too, the problem is the component or its deps.
+    -->
+    <style>
+        body {
+            margin: 0;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            background: #fafafa;
+            color: #2a2a2a;
+        }
+        .harness {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            height: 100vh;
+        }
+        .harness__panel {
+            padding: 24px;
+            border-right: 1px solid #e6e1da;
+            overflow-y: auto;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .harness__stage {
+            /* Matches the real slot: a tall, centred flex container. */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        /* Checkerboard makes the card's real edges and any transparency
+           obvious against what is otherwise a near-white card on a near-white
+           page. */
+        .harness__stage--checker {
+            background-image:
+                linear-gradient(45deg, #e8e8e8 25%, transparent 25%),
+                linear-gradient(-45deg, #e8e8e8 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #e8e8e8 75%),
+                linear-gradient(-45deg, transparent 75%, #e8e8e8 75%);
+            background-size: 24px 24px;
+            background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+        }
+        pre {
+            white-space: pre-wrap;
+            background: #fff;
+            border: 1px solid #e6e1da;
+            padding: 12px;
+            border-radius: 6px;
+        }
+        code { background: #fff; padding: 1px 4px; border: 1px solid #e6e1da; }
+        h1 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; }
+        a { color: #2a2a2a; }
+    </style>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="harness">
+        <div class="harness__panel">
+            <h1>Lanyard tuning</h1>
+
+            <p>Every knob is a query param. Edit the URL, hit enter.</p>
+
+            <pre id="readout">loading…</pre>
+
+            <p><strong>Camera</strong><br>
+            <code>x</code> <code>y</code> <code>z</code> — camera position (default 0, 0, 30).
+            Lower <code>z</code> makes the card bigger.<br>
+            <code>fov</code> — vertical field of view (default 20). Lower also makes it bigger.</p>
+
+            <p><strong>Material</strong><br>
+            <code>metalness</code> — default here is 0.15. Upstream is 0.8, which
+            greys out a white badge.<br>
+            <code>roughness</code> — default 0.9.</p>
+
+            <p><strong>Card</strong><br>
+            <code>fit</code> — <code>cover</code> or <code>contain</code>. Use
+            <code>contain</code> if the memoji gets cropped.<br>
+            <code>width</code> — lanyard band width.</p>
+
+            <p><strong>Try</strong><br>
+            <a href="?z=20&fov=20&y=0.47">z=20, pinned to top</a><br>
+            <a href="?z=16&fov=20&y=1.18">z=16, bigger</a><br>
+            <a href="?z=30&fov=20&y=-1.29">z=30, upstream size, pinned</a><br>
+            <a href="?metalness=0.8">upstream metalness (compare)</a><br>
+            <a href="?fit=contain">imageFit=contain</a></p>
+
+            <p><strong>Interaction check</strong><br>
+            Hover the card — the cursor should become a grab hand. If it does
+            not, pointer events are not reaching the mesh at all, which is a
+            different bug from the drag itself failing.</p>
+
+            <p><a href="?checker=1">toggle checkerboard</a> ·
+               <a href="index.html">real page</a></p>
+        </div>
+        <div class="harness__stage" id="stage">
+            <div class="lanyard" id="apple-lanyard"></div>
+        </div>
+    </div>
+    <script>
+        if ( new URLSearchParams( location.search ).has( 'checker' ) ) {
+            document.querySelector( '#stage' ).classList.add( 'harness__stage--checker' );
+        }
+    </script>
+    <script type="module" src="/js/lanyard-test.js"></script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /******************************************************
  * 01 BASE
  ******************************************************/
@@ -100,6 +101,32 @@ p strong {
 /******************************************************
  * 02 COMPONENTS
  ******************************************************/
+/**
+ * Ported from the upstream Lanyard.css. The component's own CSS import was
+ * removed so all styling stays in this SCSS pipeline — Vite doesn't process
+ * index.html here, so an imported stylesheet would be emitted with nothing
+ * linking to it.
+ */
+.lanyard {
+  height: 100%;
+  width: 100%;
+  touch-action: none;
+}
+.lanyard .lanyard-wrapper {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  position: relative;
+  transform-origin: center;
+  width: 100%;
+  z-index: 0;
+}
+
+.apple .portfolio__content__media {
+  padding-bottom: 0;
+}
+
 /******************************************************
 * 03 LAYOUTS
 ******************************************************/
