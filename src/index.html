@@ -31,7 +31,7 @@
                 <nav class="header__nav">
                     <a href="#about">About</a>
                     <a href="#vox">Vox.com</a>
-                    <a href="#apple">Apple</a>
+                    <!-- <a href="#apple">Apple</a> -->
                     <a href="#nyt">NYTimes</a>
                     <a href="#usat">USA Today</a>
                     <a href="#verge">The Verge</a>
@@ -47,7 +47,7 @@
                 </picture>
             </div>
             <div id="about" class="header__about">
-                <h1><strong>Making things.</strong> Creative technologist with 20 years of experience innovating huge digital products and systems. Co-founded Vox.com, built a CMS powering newsrooms worldwide, and spent the past eight years designing AI tools with the largest tech companies to empower storytellers. You can usually find me walking my dog around Brooklyn, sharing chisme, or cooking pintxos.</h1>
+                <h1><strong>Making things.</strong> Creative technologist with two decades of experience innovating large-scale products and platforms. Co-founded Vox.com, built a CMS powering newsrooms worldwide, and spent the past eight years designing AI tools with the largest tech companies to empower storytellers. You can usually find me walking my dog around Brooklyn, sharing chisme, or cooking pintxos.</h1>
             </div>
         </header>
         <section id="vox" class="portfolio vox">
@@ -83,7 +83,7 @@
                 </div>
             </div>
         </section>
-        <section id="apple" class="portfolio apple">
+        <!-- <section id="apple" class="portfolio apple">
             <div class="portfolio__role">
                 <h2>
                     <span><strong>Who:</strong> Apple</span>
@@ -92,20 +92,19 @@
             </div>
             <div class="portfolio__content layout-stacked width-third">
                 <div class="portfolio__content__media">
-                    <img src="images/apple-logo-black.svg" alt="" aria-hidden="true">
+                    <div class="lanyard" id="apple-lanyard"></div>
                 </div>
                 <div class="portfolio__content__access">
                     <form class="access-form" novalidate>
                         <label for="apple-password">Request access</label>
                         <div class="access-form__field">
                             <input type="password" id="apple-password" name="password" autocomplete="off" placeholder="Password" required>
-                            <!-- <button type="submit">↗</button> -->
                         </div>
                         <p class="access-form__error" role="alert">Incorrect password.</p>
                     </form>
                 </div>
             </div>
-        </section>
+        </section> -->
         <section id="nyt" class="portfolio nyt">
             <div class="portfolio__role">
                 <h2>
@@ -241,7 +240,10 @@
         </footer>
         -->
     </div>
+    <!-- three r128 powers SunOrb/NightSky, which read it as a global. The
+         lanyard bundles its own modern three; unifying them is step 3. -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="/js/main.js"></script>
+    <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/lanyard.js"></script>
 </body>
 </html>

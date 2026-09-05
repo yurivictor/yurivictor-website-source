@@ -92,7 +92,7 @@
             </div>
             <div class="portfolio__content layout-stacked width-third">
                 <div class="portfolio__content__media">
-                    <img src="images/apple-logo-black.svg" alt="" aria-hidden="true">
+                    <div class="lanyard" id="apple-lanyard"></div>
                 </div>
                 <div class="portfolio__content__access">
                     <form class="access-form" novalidate>
@@ -241,7 +241,10 @@
         </footer>
         -->
     </div>
+    <!-- three r128 powers SunOrb/NightSky, which read it as a global. The
+         lanyard bundles its own modern three; unifying them is step 3. -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="/js/main.js"></script>
+    <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/lanyard.js"></script>
 </body>
 </html>
