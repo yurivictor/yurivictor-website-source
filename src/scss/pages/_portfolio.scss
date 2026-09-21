@@ -338,16 +338,14 @@
     .lanyard {
         inset: 0;
         position: absolute;
-        z-index: 2;
+        z-index: 1;
     }
 
     // Above the canvas so the password field stays clickable — the canvas is a
-    // full-section hit target and would otherwise swallow the clicks. The card
-    // passes behind the form when dragged down, which is the intent: visible,
-    // not occluding the only interactive thing in the section.
+    // full-section hit target and would otherwise swallow the clicks.
     .portfolio__content__access {
         position: relative;
-        z-index: 1;
+        z-index: 2;
     }
 
     .portfolio__content__access {
