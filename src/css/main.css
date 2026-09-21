@@ -616,22 +616,17 @@ p strong {
 }
 .apple .portfolio__content__media {
   flex: 2;
-  position: relative;
+  overflow: visible;
+  position: static;
 }
-.apple .portfolio__content__media::after {
-  background: #fafafa;
-  bottom: 0;
-  content: "";
-  left: 0;
-  opacity: 0.82;
+.apple .lanyard {
+  inset: 0;
   position: absolute;
-  right: 0;
-  top: 0;
+  z-index: 2;
 }
-.apple .portfolio__content__media img {
-  height: auto;
-  object-fit: contain;
-  width: 160px;
+.apple .portfolio__content__access {
+  position: relative;
+  z-index: 1;
 }
 .apple .portfolio__content__access {
   align-items: center;

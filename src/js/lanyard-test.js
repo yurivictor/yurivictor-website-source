@@ -30,18 +30,27 @@ const settings = {
     metalness: num( 'metalness', 0.15 ),
     roughness: num( 'roughness', 0.9 ),
     width: num( 'width', 1 ),
-    fit: q.get( 'fit' ) || 'cover'
+    fit: q.get( 'fit' ) || 'cover',
+    blankBack: q.get( 'back' ) !== 'reactbits',
+    band: q.get( 'band' ) === 'atom' ? null : ( q.get( 'band' ) || '#000' ),
+    flat: q.get( 'tone' ) !== 'aces',
+    anchor: num( 'anchor', 4 )
 };
 
 /**
- * The band's fixed anchor sits at world y = 4. Vertical FOV means the visible
- * half-height at the card's depth is z * tan( fov / 2 ), independent of the
- * canvas pixel height — so this stays stable as the viewport resizes.
+ * R3F's default camera does lookAt( 0, 0, 0 ), so the world origin is always
+ * at the centre of the canvas and the camera's y only tilts the view — it
+ * cannot pan the framing. Sweeping y from +3 to -3 moves the card about ten
+ * pixels. Use `anchor` to compose vertically; it moves the rig instead.
  *
- * To pin the anchor to the top edge of the canvas:
- *   cameraY = 4 - z * tan( fov / 2 )
+ * What y and z do change is scale, via the visible world height at the card:
+ * 2 * z * tan( fov / 2 ), spread over the canvas height in pixels.
  */
-const anchorTopY = z => 4 - z * Math.tan( ( settings.fov / 2 ) * Math.PI / 180 );
+const pxPerUnit = () => {
+    const stage = document.querySelector( '#stage' );
+    const h = stage ? stage.getBoundingClientRect().height : window.innerHeight;
+    return h / ( 2 * settings.z * Math.tan( ( settings.fov / 2 ) * Math.PI / 180 ) );
+};
 
 const readout = document.querySelector( '#readout' );
 if ( readout ) {
@@ -49,8 +58,12 @@ if ( readout ) {
         `position [ ${settings.x}, ${settings.y}, ${settings.z} ]  fov ${settings.fov}`,
         `metalness ${settings.metalness}  roughness ${settings.roughness}`,
         `lanyardWidth ${settings.width}  imageFit ${settings.fit}`,
+        `blankBack ${settings.blankBack}  band ${settings.band || 'atom texture'}`,
+        `anchorY ${settings.anchor}`,
+        `flat ${settings.flat} ${settings.flat ? '(no tone mapping)' : '(ACES)'}`,
         ``,
-        `y to pin the band to the top edge at this z/fov: ${anchorTopY( settings.z ).toFixed( 2 )}`
+        `scale at this z/fov: ${pxPerUnit().toFixed( 0 )} px per world unit`,
+        `camera y only tilts — use anchor to move the card vertically`
     ].join( '\n' );
 }
 
@@ -62,6 +75,10 @@ createRoot( document.querySelector( '#apple-lanyard' ) ).render(
         cardMetalness: settings.metalness,
         cardRoughness: settings.roughness,
         lanyardWidth: settings.width,
-        imageFit: settings.fit
+        imageFit: settings.fit,
+        blankBack: settings.blankBack,
+        lanyardColor: settings.band,
+        flat: settings.flat,
+        anchorY: settings.anchor
     } )
 );

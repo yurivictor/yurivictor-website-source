@@ -17,20 +17,31 @@ const BADGE = '/images/apple_badge-cutout.png';
  * Tune these against /lanyard-test.html, which exposes all of them as query
  * params. Don't guess by editing this file.
  *
- * The band's fixed anchor sits at world y = 4. Because FOV is vertical, the
- * visible half-height is z * tan( fov / 2 ) regardless of how tall the canvas
- * is in pixels, so pinning the anchor to the top edge is stable across
- * viewport sizes:
+ * The canvas spans the whole section (~480x853), not just the media slot, so
+ * that a card dragged downward stays drawn — see _portfolio.scss. Vertical FOV
+ * maps to canvas height, so that taller canvas alone renders the card larger;
+ * z then sets how much larger. At fov 20 the visible world height is
+ * 2 * z * tan( 10 deg ), giving 853 / ( 2 * 15.4 * tan( 10 deg ) ) = 157
+ * pixels per world unit, twice the 78 it was before.
  *
- *   cameraY = 4 - z * tan( fov / 2 )
- *           = 4 - 20 * tan( 10° )
- *           = 0.47
+ * Camera y is 0 on purpose, and vertical framing is done with ANCHOR_Y
+ * instead. R3F's default camera does lookAt( 0, 0, 0 ), so the world origin is
+ * always at the centre of the canvas and moving the camera up or down only
+ * tilts the view — sweeping y from +3 to -3 moves the card by about ten
+ * pixels. Composing vertically means moving the rig, not the camera.
+ *
+ * ANCHOR_Y is measured rather than derived, because where the card comes to
+ * rest is a physics result: at the default 4 the card hung ~160px too low and
+ * overlapped the access form, so the rig is raised by ~1 world unit. The card
+ * now occupies roughly the top 180-530px of the 853px section, and the band
+ * runs off the top edge as though the lanyard continues past the frame.
  *
  * metalness is well below upstream's 0.8. That value reads as sheen on their
  * dark demo card, but the Apple badge is 98% white and goes grey under it.
  */
-const CAMERA = [ 0, 0.47, 20 ];
+const CAMERA = [ 0, 0, 15.4 ];
 const FOV = 20;
+const ANCHOR_Y = 5;
 const CARD_METALNESS = 0.15;
 
 /**
@@ -80,7 +91,17 @@ function mount () {
             frontImage: BADGE,
             position: CAMERA,
             fov: FOV,
+            anchorY: ANCHOR_Y,
             cardMetalness: CARD_METALNESS,
+            // The vendored atlas has reactbits.dev printed on the back face.
+            blankBack: true,
+            // lanyard.png is their black band with the atom logo tiled along
+            // it; a flat colour drops the map entirely.
+            lanyardColor: '#000',
+            // Skip R3F's default ACES tone mapping, which caps white at
+            // ~236/255 and leaves the badge looking greyed out on a #fafafa
+            // page.
+            flat: true,
             onDragChange
         } )
     );

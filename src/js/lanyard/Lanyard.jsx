@@ -24,6 +24,18 @@ import * as THREE from 'three';
 //     which reads as sheen on its dark demo card but turns our white badge
 //     into grey haze. Defaults are unchanged so upstream behaviour is intact
 //     unless overridden.
+//  5. blankBack prop. The baked atlas has reactbits.dev branding on the card's
+//     back face, which is visible whenever the card spins. Defaults to false
+//     so upstream behaviour is unchanged.
+//  6. lanyardColor prop. lanyard.png is a black band with the React Bits atom
+//     logo tiled along it. Setting a colour drops the map for a plain band.
+//  7. flat prop, forwarded to Canvas. R3F defaults to ACES filmic tone
+//     mapping, which caps pure white at ~236/255 — fine for a dark demo card,
+//     but it makes a white badge read grey against a near-white page.
+//  8. anchorY prop. R3F's default camera does lookAt( 0, 0, 0 ), which pins
+//     the world origin to the centre of the canvas — so the camera's y cannot
+//     pan the framing, it only tilts the view. Moving the rig is the only way
+//     to compose the card vertically. All default to upstream behaviour.
 const cardGLB = '/images/card.glb';
 const lanyard = '/images/lanyard.png';
 
@@ -41,6 +53,18 @@ const BLANK_PIXEL =
 const FRONT_UV_RECT = { x: 0, y: 0, w: 0.5, h: 0.755 };
 const BACK_UV_RECT = { x: 0.5, y: 0, w: 0.5, h: 0.757 };
 
+// The card stock has a fine paper grain baked into the atlas, so a face is
+// blanked by restamping it with the card's own material rather than filling it
+// with a flat colour, which would read as a dead plastic patch next to the
+// grainy card edges.
+//
+// This is the patch to stamp with. Measured from card.glb (atlas is
+// 1678x1677): everything below the front face's artwork is unprinted grain,
+// and it is exactly one face wide. That makes it the largest usable source —
+// a face is covered in a single column with no vertical seam, needing only one
+// mirrored repeat vertically.
+const BLANK_GRAIN_RECT = { x: 0, y: 0.6, w: 0.5, h: 0.4 };
+
 export default function Lanyard({
   position = [0, 0, 30],
   gravity = [0, -40, 0],
@@ -51,8 +75,12 @@ export default function Lanyard({
   imageFit = 'cover',
   lanyardImage = null,
   lanyardWidth = 1,
+  lanyardColor = null,
   cardMetalness = 0.8,
   cardRoughness = 0.9,
+  blankBack = false,
+  flat = false,
+  anchorY = 4,
   // Fires true when the card is grabbed and false when released. The host page
   // scrolls horizontally off document-level touch handlers, so it needs to know
   // when a touch gesture belongs to the badge rather than to navigation.
@@ -69,6 +97,7 @@ export default function Lanyard({
   return (
     <div className="lanyard-wrapper">
       <Canvas
+        flat={flat}
         camera={{ position: position, fov: fov }}
         dpr={[1, isMobile ? 1.5 : 2]}
         gl={{ alpha: transparent }}
@@ -83,8 +112,11 @@ export default function Lanyard({
             imageFit={imageFit}
             lanyardImage={lanyardImage}
             lanyardWidth={lanyardWidth}
+            lanyardColor={lanyardColor}
             cardMetalness={cardMetalness}
             cardRoughness={cardRoughness}
+            blankBack={blankBack}
+            anchorY={anchorY}
             onDragChange={onDragChange}
           />
         </Physics>
@@ -131,8 +163,11 @@ function Band({
   imageFit = 'cover',
   lanyardImage = null,
   lanyardWidth = 1,
+  lanyardColor = null,
   cardMetalness = 0.8,
   cardRoughness = 0.9,
+  blankBack = false,
+  anchorY = 4,
   onDragChange = null
 }) {
   const band = useRef(),
@@ -157,7 +192,7 @@ function Band({
   // half, back = right half). Each image is drawn aspect-preserving (no stretch).
   const cardMap = useMemo(() => {
     const baseMap = materials.base.map;
-    if (!frontImage && !backImage) return baseMap;
+    if (!frontImage && !backImage && !blankBack) return baseMap;
 
     const baseImg = baseMap.image;
     const W = baseImg.width;
@@ -189,6 +224,42 @@ function Band({
       ctx.restore();
     };
 
+    // Restamp a face with clean card grain. The patch is drawn at 1:1 so the
+    // grain keeps the same scale as the rest of the card, and alternate tiles
+    // are mirrored so the repeat reads as continuous rather than as a step.
+    //
+    // Everything is rounded to whole pixels: at fractional offsets drawImage
+    // resamples the patch edges and each tile boundary shows up as a faint
+    // seam line.
+    const fillWithGrain = rect => {
+      const sx = Math.round(BLANK_GRAIN_RECT.x * W);
+      const sy = Math.round(BLANK_GRAIN_RECT.y * H);
+      const sw = Math.round(BLANK_GRAIN_RECT.w * W);
+      const sh = Math.round(BLANK_GRAIN_RECT.h * H);
+      const rx = Math.round(rect.x * W);
+      const ry = Math.round(rect.y * H);
+      const rw = Math.round(rect.w * W);
+      const rh = Math.round(rect.h * H);
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(rx, ry, rw, rh);
+      ctx.clip();
+      for (let ty = 0; ty * sh < rh; ty++) {
+        for (let tx = 0; tx * sw < rw; tx++) {
+          const flipX = tx % 2 === 1;
+          const flipY = ty % 2 === 1;
+          ctx.save();
+          ctx.translate(rx + tx * sw, ry + ty * sh);
+          ctx.scale(flipX ? -1 : 1, flipY ? -1 : 1);
+          ctx.drawImage(baseImg, sx, sy, sw, sh, flipX ? -sw : 0, flipY ? -sh : 0, sw, sh);
+          ctx.restore();
+        }
+      }
+      ctx.restore();
+    };
+
+    // Blank first so an explicit backImage still wins.
+    if (blankBack) fillWithGrain(BACK_UV_RECT);
     if (frontImage && frontTex.image) drawFitted(frontTex.image, FRONT_UV_RECT);
     if (backImage && backTex.image) drawFitted(backTex.image, BACK_UV_RECT);
 
@@ -198,7 +269,7 @@ function Band({
     composite.anisotropy = 16;
     composite.needsUpdate = true;
     return composite;
-  }, [frontImage, backImage, imageFit, frontTex, backTex, materials.base.map]);
+  }, [frontImage, backImage, blankBack, imageFit, frontTex, backTex, materials.base.map]);
   const [curve] = useState(
     () =>
       new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()])
@@ -258,7 +329,7 @@ function Band({
 
   return (
     <>
-      <group position={[0, 4, 0]}>
+      <group position={[0, anchorY, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
           <BallCollider args={[0.1]} />
@@ -300,10 +371,10 @@ function Band({
       <mesh ref={band}>
         <meshLineGeometry />
         <meshLineMaterial
-          color="white"
+          color={lanyardColor || 'white'}
           depthTest={false}
           resolution={isMobile ? [1000, 2000] : [1000, 1000]}
-          useMap
+          useMap={lanyardColor ? 0 : 1}
           map={texture}
           repeat={[-4, 1]}
           lineWidth={lanyardWidth}

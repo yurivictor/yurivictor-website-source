@@ -316,26 +316,38 @@
         position: relative;
     }
 
+    // No ::after scrim and no img sizing here: both were for the old static
+    // apple-logo-black.svg, which was deliberately faded into the background.
+    // The slot now holds the lanyard canvas, which must render at full opacity
+    // and receive pointer events.
+    //
+    // The slot keeps its flex size so the access form still sits where it did,
+    // but it no longer bounds the canvas: a dragged card leaving this box was
+    // being cut off at its edge. overflow is cleared and position dropped to
+    // static so the canvas below positions against .portfolio__content.
     .portfolio__content__media {
         flex: 2;
+        overflow: visible;
+        position: static;
+    }
+
+    // The canvas covers the whole section rather than just the media slot,
+    // because WebGL cannot draw outside its own element: wherever the card can
+    // be dragged, the canvas has to already be there. Pulling it down over the
+    // form now keeps it visible instead of clipping it away.
+    .lanyard {
+        inset: 0;
+        position: absolute;
+        z-index: 2;
+    }
+
+    // Above the canvas so the password field stays clickable — the canvas is a
+    // full-section hit target and would otherwise swallow the clicks. The card
+    // passes behind the form when dragged down, which is the intent: visible,
+    // not occluding the only interactive thing in the section.
+    .portfolio__content__access {
         position: relative;
-
-        &::after {
-            background: #fafafa;
-            bottom: 0;
-            content: '';
-            left: 0;
-            opacity: 0.82;
-            position: absolute;
-            right: 0;
-            top: 0;
-        }
-
-        img {
-            height: auto;
-            object-fit: contain;
-            width: 160px;
-        }
+        z-index: 1;
     }
 
     .portfolio__content__access {
