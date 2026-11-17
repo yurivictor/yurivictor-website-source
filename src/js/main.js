@@ -335,14 +335,6 @@ class App {
         this.hasScrolled = false; // Track if user scrolled vs tapped
         this.bindEvents();
         this.setHeight();
-        // Wait for custom web fonts before measuring, otherwise the binary
-        // search runs against fallback-font metrics and lands on a different
-        // size each load (FOUT race).
-        if ( document.fonts && document.fonts.ready ) {
-            document.fonts.ready.then( () => this.fitHeaderText() );
-        } else {
-            this.fitHeaderText();
-        }
         this.bouncePhoto();
         this.bindAccessForm();
         this.logStuff();
@@ -351,7 +343,6 @@ class App {
         // this.fetchLocalData();
     }
     bindEvents () {
-        window.addEventListener( 'resize', this.fitHeaderText.bind( this ) );
         document.addEventListener( 'touchstart', this.handleTouchScrollStart.bind( this ), { passive: true } );
         if ( this.isTouchDevice ) {
             // Touch devices: tap-only scrolling
@@ -435,29 +426,6 @@ class App {
         };
 
         animate();
-    }
-    fitHeaderText () {
-        const about = document.querySelector( '.header__about' );
-        const h1 = about && about.querySelector( 'h1' );
-        if ( !about || !h1 ) return;
-
-        const style = getComputedStyle( about );
-        const paddingTop = parseFloat( style.paddingTop ) || 0;
-        const paddingBottom = parseFloat( style.paddingBottom ) || 0;
-        const available = about.clientHeight - paddingTop - paddingBottom;
-        let lo = 10, hi = 300;
-        h1.style.fontSize = '';
-
-        while ( lo < hi - 1 ) {
-            const mid = Math.floor( ( lo + hi ) / 2 );
-            h1.style.fontSize = mid + 'px';
-            if ( h1.scrollHeight <= available ) {
-                lo = mid;
-            } else {
-                hi = mid;
-            }
-        }
-        h1.style.fontSize = lo + 'px';
     }
     setHeight () {
         if ( window.matchMedia( '(pointer: coarse)' ).matches) {
@@ -830,6 +798,50 @@ class App {
         }
     }
 }
+
+// Grow the header h1 from its small CSS size to the largest size that fits
+// .header__about without overflowing. Runs at module evaluation rather than
+// in App, because DOMContentLoaded waits for every module script — including
+// the multi-MB lanyard.js — which left the text unfitted for seconds.
+function fitHeaderText () {
+    const about = document.querySelector( '.header__about' );
+    const h1 = about && about.querySelector( 'h1' );
+    if ( !about || !h1 ) return;
+
+    const style = getComputedStyle( about );
+    const available = about.clientHeight
+        - ( parseFloat( style.paddingTop ) || 0 )
+        - ( parseFloat( style.paddingBottom ) || 0 );
+    const fits = () => h1.scrollHeight <= available && h1.scrollWidth <= h1.clientWidth;
+
+    // The CSS size is the floor: it's readable everywhere, so never shrink
+    // below it — only grow.
+    h1.style.fontSize = '';
+    let lo = Math.floor( parseFloat( getComputedStyle( h1 ).fontSize ) ) || 16;
+    let hi = 300;
+
+    while ( lo < hi - 1 ) {
+        const mid = Math.floor( ( lo + hi ) / 2 );
+        h1.style.fontSize = mid + 'px';
+        if ( fits() ) {
+            lo = mid;
+        } else {
+            hi = mid;
+        }
+    }
+    h1.style.fontSize = lo + 'px';
+}
+
+fitHeaderText();
+// Refit once the web fonts arrive; fallback-font metrics differ.
+if ( document.fonts && document.fonts.ready ) {
+    document.fonts.ready.then( fitHeaderText );
+}
+let fitFrame = 0;
+window.addEventListener( 'resize', () => {
+    cancelAnimationFrame( fitFrame );
+    fitFrame = requestAnimationFrame( fitHeaderText );
+} );
 
 // Initialize the app
 document.addEventListener( 'DOMContentLoaded', () => {

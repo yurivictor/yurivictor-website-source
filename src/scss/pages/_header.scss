@@ -25,14 +25,18 @@
         display: flex;
         flex: 0 0 50%;
         flex-direction: column;
-        justify-content: center;
+        // `safe` keeps overflowing content scrollable instead of clipping the top.
+        justify-content: safe center;
         overflow-y: auto;
         padding: $space-default;
         text-wrap: pretty;
 
         h1 {
             font-family: $font-serif;
-            font-size: clamp( 18px, 3.8vw, 72px );
+            // Deliberately small on every screen so the text is readable
+            // before JS runs; fitHeaderText() in main.js grows it to fill.
+            font-size: clamp( 16px, 1.4vw, 24px );
+            overflow-wrap: break-word;
             font-feature-settings: "dlig" 1, "liga" 1;
             font-variant-ligatures: discretionary-ligatures;
             font-weight: 400;
@@ -100,10 +104,6 @@
 
         &__about {
             padding: $space-small;
-
-            h1 {
-                font-size: clamp( 28px, 7vw, 52px );
-            }
         }
 
         &__photo {
@@ -124,9 +124,6 @@
     // IPad Vertical
     @media ( min-width: 600px ) and ( max-width: 900px ) {
         &__about {
-            h1 {
-                font-size: 64px;
-            }
             p {
                 font-size: 24px;
             }
@@ -142,11 +139,6 @@
     @media ( max-width: $width-small ) {
         &__about {
             padding: $space-small;
-
-            h1 {
-                font-size: clamp( 24px, 8vw, 40px );
-                padding: 0;
-            }
 
             p {
                 font-size: 16px;
